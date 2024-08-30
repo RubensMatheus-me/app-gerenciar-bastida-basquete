@@ -1,16 +1,18 @@
 import 'package:basketball_statistics/app/domain/entities/match.dart';
 
 class AfterMatch extends Match {
-  late int totalPoints; 
-  late DateTime durationMatch; 
-  late int totalFouls; 
-  late String winner; 
-  late int pointsDifference; 
-  late int totalRebounds; 
-  late int totalAssists; 
-  late int totalTurnovers; 
+  late dynamic id;
+  late int totalPoints;
+  late DateTime durationMatch;
+  late int totalFouls;
+  late String winner;
+  late int pointsDifference;
+  late int totalRebounds;
+  late int totalAssists;
+  late int totalTurnovers;
+  late bool isWinner;
 
-   AfterMatch({
+  AfterMatch({
     required super.id,
     required super.teamA,
     required super.teamB,
@@ -41,15 +43,14 @@ class AfterMatch extends Match {
   determineWinner() {
     if (pointsTeamA > pointsTeamB) {
       winner = teamA.name;
-    } else if (pointsTeamB > pointsTeamA) {
-      winner = teamB.name;
+      isWinner = true;
     } else {
-      winner = "Empate";
+      winner = teamB.name;
+      isWinner = true;
     }
   }
 
   calculatePointsDifference() {
     pointsDifference = (pointsTeamA - pointsTeamB).abs();
   }
-
 }
