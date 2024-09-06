@@ -32,8 +32,8 @@ class Team {
           "O time deve conter a quantidade correta de jogadores para o inicio de partida");
   }
 
-  DTOTeam save(DTOTeam dto) {
-    return dao.save(dto);
+  Future<DTOTeam> save() async {
+    return await dao.save(dto);
   }
 
   DTOTeam remove(id) {

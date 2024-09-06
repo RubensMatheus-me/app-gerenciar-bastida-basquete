@@ -1,4 +1,6 @@
+import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
 import 'package:basketball_statistics/app/domain/entities/team.dart';
+import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
 
 class Player {
   late dynamic id;
@@ -6,6 +8,8 @@ class Player {
   late String position;
   late int tShirtNumber;
   late Team association;
+  late DTOPlayer dto;
+  late IDAOPlayer dao;
 
   Player(this.name, this.association, this.position, this.tShirtNumber) {
     validatePlayerName(name);
@@ -31,5 +35,12 @@ class Player {
   validateTshirtNumberPlayer(int number) {
     if (number < 0 && number > 100)
       throw Exception("O numero do jogador é invalido (0 - 99)");
+  }
+  Future<DTOPlayer> save() async {
+    return await dao.save(dto);
+  }
+
+  DTOPlayer remove(id) {
+    return remove(id);
   }
 }
