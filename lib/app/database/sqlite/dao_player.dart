@@ -2,15 +2,27 @@ import 'package:basketball_statistics/app/database/sqlite/connection.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
 import 'package:basketball_statistics/app/domain/entities/player.dart';
 import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
+import 'package:basketball_statistics/app/domain/entities/team.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DaoPlayer implements IDAOPlayer {
   late Database _db;
 
+  
   @override
-  Future<DTOPlayer> remove(id) {
-    throw UnimplementedError();
+   Future<DTOPlayer> remove(dynamic id) async {
+   /*
+    _db = await Connection.openDb();
+    await _db.delete(
+      'player',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    
+    //return DTOPlayer(id: id, name: '', position: '', tShirtNumber: 0, association: Team(name: '', players: [])); 
+    */
   }
+  
 
   @override
   Future<DTOPlayer> save(DTOPlayer dto) async {
@@ -18,7 +30,14 @@ class DaoPlayer implements IDAOPlayer {
     int id = await _db
         .rawInsert('''INSERT INTO player (name, position, tShirtNumber, team)
       VALUES (?, ?, ?, ?) 
-      ''', [dto.name, dto.position, dto.tShirtNumber, dto.association]);
+      ''', 
+      [
+        dto.name,
+        dto.position,
+        dto.tShirtNumber,
+        dto.association.name
+      ]);
+
     dto.id = id;
     return dto;
   }

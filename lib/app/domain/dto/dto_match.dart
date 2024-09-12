@@ -9,7 +9,7 @@ class DTOMatch {
   late int pointsTeamA;
   late int pointsTeamB;
   late DateTime timer;
-  late bool isBallInPlay;
+  late bool matchStarted;
 
   DTOMatch(
       {this.id,
@@ -20,5 +20,5 @@ class DTOMatch {
       this.pointsTeamA = 0,
       this.pointsTeamB = 0,
       required this.timer,
-      this.isBallInPlay = true});
+      this.matchStarted = true});
 }

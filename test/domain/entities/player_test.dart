@@ -5,7 +5,25 @@ import 'package:flutter_test/flutter_test.dart';
 main() {
   group('Player validation', () {
     test('Name validation error', () {
-      
+      expect(() => PlayerNameTest(""), throwsException);
+    });
+
+    test('Team name validation error', () {
+      expect(() => SimpleTeam(name: ""), throwsException);
+    });
+
+
+    test('Position validation error', () {
+      expect(() => PlayerPositionTest(""), throwsException);
+    });
+
+    test('T-Shirt number validation error', () {
+      expect(() => PlayerTshirNumberTest(-1), throwsException);  // Teste de número inválido
+      expect(() => PlayerTshirNumberTest(100), throwsException); // Teste de número inválido
+    });
+
+    test('Valid T-Shirt number', () {
+      expect(() => PlayerTshirNumberTest(10), returnsNormally);  // Teste de número válido
     });
   });
 }
@@ -22,6 +40,7 @@ class PlayerNameTest {
     if (name.isEmpty) throw Exception("O jogador deve conter um nome");
   }
 }
+
 class PlayerAssociationTeamTest {
   late dynamic id;
   late Team team;
@@ -30,12 +49,13 @@ class PlayerAssociationTeamTest {
     validateAssociationTeam(team);
   }
 
-    validateAssociationTeam(Team association) {
-    if (association != "TeamA" || association != "TeamB")
+  validateAssociationTeam(Team association) {
+    if (association.name != "TeamA" && association.name != "TeamB") {
       throw Exception("O jogador deve ser inserido no time A ou time B");
+    }
   }
-
 }
+
 class PlayerPositionTest {
   late dynamic id;
   late String position;
@@ -45,10 +65,12 @@ class PlayerPositionTest {
   }
 
   validatePlayerPosition(String position) {
-  if (position.isEmpty)
-    throw Exception("O jogador deve conter uma posição na partida");
+    if (position.isEmpty) {
+      throw Exception("O jogador deve conter uma posição na partida");
+    }
   }
 }
+
 class PlayerTshirNumberTest {
   late dynamic id;
   late int tShirtNumber;
@@ -58,7 +80,20 @@ class PlayerTshirNumberTest {
   }
 
   validateTshirtNumberPlayer(int number) {
-    if (number < 0 && number > 100)
-      throw Exception("O numero do jogador é invalido (0 - 99)");
+    if (number < 0 || number > 99) {
+      throw Exception("O número do jogador é inválido (0 - 99)");
+    }
+  }
+}
+
+class SimpleTeam {
+  late String name;
+
+  SimpleTeam({required this.name}) {
+    validTeamName(name);
+  }
+
+  validTeamName(String name) {
+    if (name.isEmpty) throw Exception("Nome do Time não pode ser vazio");
   }
 }

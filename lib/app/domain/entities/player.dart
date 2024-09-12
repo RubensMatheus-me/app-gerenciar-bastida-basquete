@@ -36,11 +36,12 @@ class Player {
     if (number < 0 && number > 100)
       throw Exception("O numero do jogador é invalido (0 - 99)");
   }
+
   Future<DTOPlayer> save() async {
     return await dao.save(dto);
   }
 
-  DTOPlayer remove(id) {
-    return remove(id);
+  Future<DTOPlayer> remove(id) async{
+    return await remove(id);
   }
 }
