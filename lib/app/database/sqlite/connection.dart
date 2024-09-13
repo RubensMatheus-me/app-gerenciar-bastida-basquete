@@ -9,13 +9,15 @@ class Connection {
   static Future<Database> openDb() async {
     if (!isOpened) {
       var path = join(await getDatabasesPath(), 'basketball.db');
-      
-      _db = await openDatabase(path, version: 1, onCreate: (db, version) {
+
+      _db = await openDatabase(path, version: 1, onCreate: (db, version) async {
         createTables.forEach(db.execute);
         insertRegisters.forEach(db.execute);
-      });
-      isOpened = true;
 
+        await db.execute('PRAGMA foreign_keys=ON');
+      });
+
+      isOpened = true;
     }
     return _db;
   }

@@ -18,12 +18,12 @@ main() {
     });
 
     test('T-Shirt number validation error', () {
-      expect(() => PlayerTshirNumberTest(-1), throwsException);  // Teste de número inválido
-      expect(() => PlayerTshirNumberTest(100), throwsException); // Teste de número inválido
+      expect(() => PlayerTshirNumberTest(-1), throwsException);  
+      expect(() => PlayerTshirNumberTest(100), throwsException);
     });
 
     test('Valid T-Shirt number', () {
-      expect(() => PlayerTshirNumberTest(10), returnsNormally);  // Teste de número válido
+      expect(() => PlayerTshirNumberTest(10), returnsNormally);  
     });
   });
 }

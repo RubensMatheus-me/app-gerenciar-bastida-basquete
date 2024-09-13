@@ -11,9 +11,8 @@ class Team {
 
   Team({
     required this.name,
-    required this.players,
-    required this.dao,
-    required this.dto,
+    required this.players, 
+    required this.id,
   }) {
     validTeamName(name);
     validateTeamPlayer(players);

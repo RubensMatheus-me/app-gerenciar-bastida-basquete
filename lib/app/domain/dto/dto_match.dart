@@ -1,9 +1,10 @@
+import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:basketball_statistics/app/domain/entities/team.dart';
 
 class DTOMatch {
   late dynamic id;
-  late Team teamA;
-  late Team teamB;
+  late DTOTeam teamA;
+  late DTOTeam teamB;
   late int fouls;
   late int turnGame;
   late int pointsTeamA;

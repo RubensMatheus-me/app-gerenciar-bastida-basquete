@@ -5,14 +5,15 @@ const createTables = [
       name VARCHAR(200) NOT NULL,
       position VARCHAR(20) NOT NULL,
       tShirtNumber INTEGER NOT NULL,
-      team CHAR(5) NOT NULL
+      team CHAR(5) NOT NULL 
     );
   ''',
   '''
     CREATE TABLE team(
       id INTEGER NOT NULL PRIMARY KEY,
       name CHAR(5) NOT NULL,
-      player VARCHAR(200) NOT NULL
+      FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
+
     );
   '''
 ];

@@ -1,3 +1,4 @@
+import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:basketball_statistics/app/domain/entities/team.dart';
 
 class DTOPlayer {
@@ -5,7 +6,7 @@ class DTOPlayer {
   late String name;
   late String position;
   late int tShirtNumber;
-  late Team association;
+  late DTOTeam association;
 
   DTOPlayer({this.id, required this.name, required this.position, required this.tShirtNumber, required this.association});
 }

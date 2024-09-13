@@ -11,7 +11,17 @@ class Player {
   late DTOPlayer dto;
   late IDAOPlayer dao;
 
-  Player(this.name, this.association, this.position, this.tShirtNumber) {
+  Player(
+      {required this.id,
+      required this.name,
+      required this.association,
+      required this.position,
+      required this.tShirtNumber}) {
+    id = dto.id;
+    name = dto.name;
+    position = dto.position;
+    tShirtNumber = dto.tShirtNumber;
+    association = dto.association as Team;
     validatePlayerName(name);
     validateAssociationTeam(association);
     validatePlayerPosition(position);
@@ -41,7 +51,7 @@ class Player {
     return await dao.save(dto);
   }
 
-  Future<DTOPlayer> remove(id) async{
+  Future<DTOPlayer> remove(id) async {
     return await remove(id);
   }
 }

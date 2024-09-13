@@ -5,24 +5,17 @@ import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
 import 'package:basketball_statistics/app/domain/entities/team.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DaoPlayer implements IDAOPlayer {
+class ImpDaoPlayer implements IDAOPlayer {
   late Database _db;
 
-  
+  ImpDaoPlayer(this._db);
+
   @override
-   Future<DTOPlayer> remove(dynamic id) async {
-   /*
+  Future<DTOPlayer?> remove(dynamic id) async {
     _db = await Connection.openDb();
-    await _db.delete(
-      'player',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-    
-    //return DTOPlayer(id: id, name: '', position: '', tShirtNumber: 0, association: Team(name: '', players: [])); 
-    */
+    var sql = 'DELETE FROM player WHERE id = ?';
+    _db.rawDelete(sql, [id]);
   }
-  
 
   @override
   Future<DTOPlayer> save(DTOPlayer dto) async {
@@ -30,21 +23,28 @@ class DaoPlayer implements IDAOPlayer {
     int id = await _db
         .rawInsert('''INSERT INTO player (name, position, tShirtNumber, team)
       VALUES (?, ?, ?, ?) 
-      ''', 
-      [
-        dto.name,
-        dto.position,
-        dto.tShirtNumber,
-        dto.association.name
-      ]);
+      ''', [dto.name, dto.position, dto.tShirtNumber, dto.association.name]);
 
     dto.id = id;
     return dto;
   }
 
   @override
-  Future<List<Player>> search() {
-    // TODO: implement search
-    throw UnimplementedError();
+  Future<List<Player>> search() async {
+    _db = await Connection.openDb();
+
+    List<Map<String, dynamic>> result = await _db.query('player');
+
+    List<Player> list = List.generate(result.length, (i) {
+      var line = result[i];
+      return Player(
+        id: line['id'],
+        name: line['name'],
+        position: line['position'],
+        tShirtNumber: line['tShirtNumber'],
+        association: line['team'],
+      );
+    });
+    return list;
   }
 }
