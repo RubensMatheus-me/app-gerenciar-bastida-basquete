@@ -3,6 +3,7 @@ import 'package:basketball_statistics/app/domain/entities/match.dart';
 class AfterMatch extends Match {
   @override
   late dynamic id;
+  late dynamic matchId;
   late int totalPoints;
   late DateTime durationMatch;
   late int totalFouls;

@@ -5,20 +5,20 @@ import 'package:basketball_statistics/app/domain/interface/dao_Team.dart';
 class Team {
   late dynamic id;
   late String name;
-  late List<Player> players;
+  //late List<Player> players;
   late DTOTeam dto;
   late IDAOTeam dao;
 
   Team({
     required this.name,
-    required this.players, 
+    //required this.players, 
     required this.id,
   }) {
     validTeamName(name);
-    validateTeamPlayer(players);
+    //validateTeamPlayer(players);
     id = dto.id;
     name = dto.name;
-    players = dto.players;
+    //players = dto.players;
   }
 
   validTeamName(String name) {
@@ -31,11 +31,4 @@ class Team {
           "O time deve conter a quantidade correta de jogadores para o inicio de partida");
   }
 
-  Future<DTOTeam> save() async {
-    return await dao.save(dto);
-  }
-
-  DTOTeam remove(id) {
-    return remove(id);
-  }
 }

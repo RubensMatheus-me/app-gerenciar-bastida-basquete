@@ -1,12 +1,35 @@
-import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
-import 'package:basketball_statistics/app/domain/entities/team.dart';
-
 class DTOPlayer {
-  late dynamic id;
-  late String name;
-  late String position;
-  late int tShirtNumber;
-  late DTOTeam association;
+  int id;
+  String name;
+  String position;
+  int tShirtNumber;
+  int teamId;
 
-  DTOPlayer({this.id, required this.name, required this.position, required this.tShirtNumber, required this.association});
+  DTOPlayer({
+    required this.id,
+    required this.name,
+    required this.position,
+    required this.tShirtNumber,
+    required this.teamId,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'position': position,
+      'tShirtNumber': tShirtNumber,
+      'teamId': teamId,
+    };
+  }
+
+  factory DTOPlayer.fromMap(Map<String, dynamic> map) {
+    return DTOPlayer(
+      id: map['id'],
+      name: map['name'],
+      position: map['position'],
+      tShirtNumber: map['tShirtNumber'],
+      teamId: map['teamId'],
+    );
+  }
 }

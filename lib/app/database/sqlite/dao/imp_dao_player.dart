@@ -11,40 +11,41 @@ class ImpDaoPlayer implements IDAOPlayer {
   ImpDaoPlayer(this._db);
 
   @override
-  Future<DTOPlayer?> remove(dynamic id) async {
+  Future<int> insertPlayer(DTOPlayer player) async {
     _db = await Connection.openDb();
-    var sql = 'DELETE FROM player WHERE id = ?';
-    _db.rawDelete(sql, [id]);
+    return await _db.insert('Player', player.toMap());
   }
 
   @override
-  Future<DTOPlayer> save(DTOPlayer dto) async {
+  Future<List<DTOPlayer>> getPlayersByTeam(dynamic teamId) async {
     _db = await Connection.openDb();
-    int id = await _db
-        .rawInsert('''INSERT INTO player (name, position, tShirtNumber, team)
-      VALUES (?, ?, ?, ?) 
-      ''', [dto.name, dto.position, dto.tShirtNumber, dto.association.name]);
-
-    dto.id = id;
-    return dto;
-  }
-
-  @override
-  Future<List<Player>> search() async {
-    _db = await Connection.openDb();
-
-    List<Map<String, dynamic>> result = await _db.query('player');
-
-    List<Player> list = List.generate(result.length, (i) {
-      var line = result[i];
-      return Player(
-        id: line['id'],
-        name: line['name'],
-        position: line['position'],
-        tShirtNumber: line['tShirtNumber'],
-        association: line['team'],
-      );
+    final List<Map<String, dynamic>> maps = await _db.query(
+      'Player',
+      where: 'teamId = ?',
+      whereArgs: [teamId],
+    );
+    return List.generate(maps.length, (i) {
+      return DTOPlayer.fromMap(maps[i]);
     });
-    return list;
+  }
+  @override
+  Future<int> updatePlayer(DTOPlayer player) async {
+    _db = await Connection.openDb();
+    return await _db.update(
+      'Player',
+      player.toMap(),
+      where: 'id = ?',
+      whereArgs: [player.id],
+    );
+  }
+  @override
+  Future<int> deletePlayer(dynamic id) async {
+    _db = await Connection.openDb();
+    return await _db.delete(
+      'Player',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
+

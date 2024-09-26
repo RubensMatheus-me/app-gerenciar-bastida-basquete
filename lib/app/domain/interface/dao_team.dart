@@ -2,7 +2,14 @@ import '../dto/dto_team.dart';
 import '../entities/team.dart';
 
 abstract class IDAOTeam {
-  save(DTOTeam dto);
+  Future<int> insertTeam(DTOTeam team); 
+  
+  Future<int> updateTeam(DTOTeam team); 
 
-  Future<List<Team>> search();
+  Future<int> deleteTeam(dynamic id);
+
+  Future<DTOTeam?> getTeamById(dynamic id); 
+
+  Future<List<DTOTeam>> getAllTeams();
+
 }

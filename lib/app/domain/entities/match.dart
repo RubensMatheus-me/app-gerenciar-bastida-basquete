@@ -38,15 +38,15 @@ class Match {
   if (teamA == teamB) {
     throw Exception("Os times A e B não podem ser o mesmo time");
   }
-  validateTeamPlayers(teamA);
-  validateTeamPlayers(teamB);
+  //validateTeamPlayers(teamA);
+  //validateTeamPlayers(teamB);
 }
 
-validateTeamPlayers(Team team) {
-  if (team.players.length < 3 || team.players.length > 4) {
-    throw Exception("Cada time deve ter entre 3 e 4 jogadores (3 titulares e 1 reserva)");
-  }
-}
+//validateTeamPlayers(Team team) {
+//  if (team.players.length < 3 || team.players.length > 4) {
+//    throw Exception("Cada time deve ter entre 3 e 4 jogadores (3 titulares e 1 reserva)");
+//  }
+//}
 
 
   startMatch(DateTime startTime, DateTime endTime) {

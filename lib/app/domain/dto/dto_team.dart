@@ -1,9 +1,23 @@
-import 'package:basketball_statistics/app/domain/entities/player.dart';
-
 class DTOTeam {
-  late dynamic id;
-  late String name;
-  late List<Player> players;
+  int id;
+  String name;
 
-  DTOTeam({this.id, required this.name, required this.players});
+  DTOTeam({
+    required this.id,
+    required this.name,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
+  factory DTOTeam.fromMap(Map<String, dynamic> map) {
+    return DTOTeam(
+      id: map['id'],
+      name: map['name'],
+    );
+  }
 }
