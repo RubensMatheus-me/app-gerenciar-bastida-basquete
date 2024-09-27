@@ -7,8 +7,6 @@ import 'package:sqflite/sqflite.dart';
 class ImpDaoTeam implements IDAOTeam {
   late Database _db;
 
-  ImpDaoTeam(this._db);
-
   @override
   Future<int> insertTeam(DTOTeam team) async {
     _db = await Connection.openDb();

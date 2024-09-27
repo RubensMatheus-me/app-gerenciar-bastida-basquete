@@ -15,7 +15,7 @@ main() {
     db = await openDatabase(inMemoryDatabasePath, version: 1, onCreate: (db, version) {
       createTables.forEach(db.execute);
     });
-    dao = ImpDaoTeam(db);
+    dao = ImpDaoTeam();
   });
 
   test('insert and get team', () async {
