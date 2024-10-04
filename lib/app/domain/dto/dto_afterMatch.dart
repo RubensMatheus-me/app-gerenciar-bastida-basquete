@@ -1,7 +1,7 @@
 class DTOAfterMatch {
   int id;
   int totalPoints;
-  DateTime durationMatch;
+  int durationMatch;
   int totalFouls;
   String winner;
   int pointsDifference;
@@ -23,35 +23,33 @@ class DTOAfterMatch {
     required this.isWinner,
   });
 
-  // Método para converter de Map para DTOAfterMatch
   factory DTOAfterMatch.fromMap(Map<String, dynamic> map) {
     return DTOAfterMatch(
-      id: map['id'],
-      totalPoints: map['totalPoints'],
-      durationMatch: DateTime.parse(map['durationMatch']),
-      totalFouls: map['totalFouls'],
-      winner: map['winner'],
-      pointsDifference: map['pointsDifference'],
-      totalRebounds: map['totalRebounds'],
-      totalAssists: map['totalAssists'],
-      totalTurnovers: map['totalTurnovers'],
-      isWinner: map['isWinner'] == 1, // Convertendo int para bool
+      id: map['id'] ?? 0,
+      totalPoints: map['totalPoints'] ?? 0,
+      durationMatch: map['durationMatch'] ?? 0,
+      totalFouls: map['totalFouls'] ?? 0,
+      winner: map['winner'] ?? '',
+      pointsDifference: map['pointsDifference'] ?? 0,
+      totalRebounds: map['totalRebounds'] ?? 0,
+      totalAssists: map['totalAssists'] ?? 0,
+      totalTurnovers: map['totalTurnovers'] ?? 0,
+      isWinner: (map['isWinner'] ?? 0) == 1,
     );
   }
-
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'totalPoints': totalPoints,
-      'durationMatch': durationMatch.toIso8601String(),
+      'durationMatch': durationMatch,
       'totalFouls': totalFouls,
       'winner': winner,
       'pointsDifference': pointsDifference,
       'totalRebounds': totalRebounds,
       'totalAssists': totalAssists,
       'totalTurnovers': totalTurnovers,
-      'isWinner': isWinner ? 1 : 0, 
+      'isWinner': isWinner ? 1 : 0,
     };
   }
 }

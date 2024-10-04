@@ -13,7 +13,8 @@ void main() {
   });
 
   test('Deve retornar estatísticas de uma partida com sucesso', () async {
-    var db = await openDatabase(inMemoryDatabasePath, version: 1, onCreate: (db, version) {
+    var db = await openDatabase(inMemoryDatabasePath, version: 1,
+        onCreate: (db, version) {
       createTables.forEach(db.execute);
       insertRegisters.forEach(db.execute);
     });

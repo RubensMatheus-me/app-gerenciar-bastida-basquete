@@ -1,9 +1,9 @@
 class DTOTeam {
-  int id;
+  int? id;
   String name;
 
   DTOTeam({
-    required this.id,
+    this.id,
     required this.name,
   });
 

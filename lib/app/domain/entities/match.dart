@@ -20,6 +20,7 @@ class Match {
   late DateTime timer;
   //late bool isBallInPlay;
   late bool matchStarted;
+  late bool isCompleted;
 
   Match(
       {required this.id,
@@ -29,18 +30,18 @@ class Match {
       required this.turnGame,
       required this.pointsTeamA,
       required this.pointsTeamB,
+      required this.isCompleted,
       required this.timer}) {
     validateTeams();
   }
 
-
   validateTeams() {
-  if (teamA == teamB) {
-    throw Exception("Os times A e B não podem ser o mesmo time");
+    if (teamA == teamB) {
+      throw Exception("Os times A e B não podem ser o mesmo time");
+    }
+    //validateTeamPlayers(teamA);
+    //validateTeamPlayers(teamB);
   }
-  //validateTeamPlayers(teamA);
-  //validateTeamPlayers(teamB);
-}
 
 //validateTeamPlayers(Team team) {
 //  if (team.players.length < 3 || team.players.length > 4) {
@@ -48,20 +49,18 @@ class Match {
 //  }
 //}
 
-
   startMatch(DateTime startTime, DateTime endTime) {
-  if (matchStarted) throw Exception("A partida já foi iniciada");
-  matchStarted = true;
-  validateMatchDuration(startTime, endTime);
-}
-  
+    if (matchStarted) throw Exception("A partida já foi iniciada");
+    matchStarted = true;
+    validateMatchDuration(startTime, endTime);
+  }
 
   validateMatchDuration(DateTime startTime, DateTime endTime) {
-  final duration = endTime.difference(startTime);
-  if (duration > Duration(minutes: 10)) {
-    throw Exception("A partida não pode ultrapassar 10 minutos");
+    final duration = endTime.difference(startTime);
+    if (duration > Duration(minutes: 10)) {
+      throw Exception("A partida não pode ultrapassar 10 minutos");
+    }
   }
-}
 
   scorePoints(int points, Team team) {
     if (team == teamA) {

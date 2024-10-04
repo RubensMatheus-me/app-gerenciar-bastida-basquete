@@ -4,4 +4,5 @@ class Routes {
   static final String addTeam = 'add-team';
   static final String playerList = 'team-list/players';
   static final String teamList = 'team-list';
+  static final String startMatch = 'start-game';
 }

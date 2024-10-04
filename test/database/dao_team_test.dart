@@ -12,22 +12,21 @@ main() {
   setUpAll(() async {
     databaseFactory = databaseFactoryFfi;
     sqfliteFfiInit();
-    db = await openDatabase(inMemoryDatabasePath, version: 1, onCreate: (db, version) {
+    db = await openDatabase(inMemoryDatabasePath, version: 1,
+        onCreate: (db, version) {
       createTables.forEach(db.execute);
     });
     dao = ImpDaoTeam();
   });
 
   test('insert and get team', () async {
-    var team = DTOTeam(id: 1, name: 'Team A');
+    var team = DTOTeam(name: 'Team A');
+
     await dao.insertTeam(team);
 
-    var result = await dao.getTeamById(1);
+    var teams = await dao.getAllTeams();
 
-    expect(result?.name, 'Team A');
-  });
-
-  tearDownAll(() async {
-    await db.close();
+    expect(teams.length, 3);
+    expect(teams.first.name, 'Team A');
   });
 }

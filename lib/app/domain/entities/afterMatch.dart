@@ -23,6 +23,7 @@ class AfterMatch extends Match {
     required super.pointsTeamA,
     required super.pointsTeamB,
     required super.timer,
+    required super.isCompleted,
     required this.durationMatch,
     required this.totalRebounds,
     required this.totalAssists,

@@ -8,6 +8,8 @@ class Player {
   late String position;
   late int tShirtNumber;
   late int teamId;
+  late int rebounds;
+  late int assists;
   late DTOPlayer dto;
   late IDAOPlayer dao;
 
@@ -25,9 +27,7 @@ class Player {
     validatePlayerName(name);
     validatePlayerPosition(position);
     validateTshirtNumberPlayer(tShirtNumber);
-
   }
-
 
   validatePlayerName(String name) {
     if (name.isEmpty) throw Exception("O jogador deve conter um nome");

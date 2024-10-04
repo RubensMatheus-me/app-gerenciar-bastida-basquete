@@ -5,6 +5,8 @@ const createTables = [
       name VARCHAR(200) NOT NULL,
       position VARCHAR(200) NOT NULL,
       tShirtNumber INTEGER NOT NULL,
+      rebounds INTEGER,
+      assists INTEGER,
       teamId INTEGER NOT NULL,
       FOREIGN KEY (teamId) REFERENCES Team(id)
     );
@@ -24,20 +26,33 @@ const createTables = [
       pointsTeamB INTEGER NOT NULL,
       foulsTeamA INTEGER NOT NULL,
       foulsTeamB INTEGER NOT NULL,
-      timer TEXT NOT NULL, 
+      timer INTEGER NOT NULL, 
       assists INTEGER NOT NULL,
+      isCompleted BOOLEAN NOT NULL,
       turnGame INTEGER NOT NULL,
       FOREIGN KEY (teamAId) REFERENCES Team(id),
       FOREIGN KEY (teamBId) REFERENCES Team(id)
     );
   ''',
   '''
+    CREATE TABLE PlayerMatchStats (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      playerId INTEGER NOT NULL,
+      matchId INTEGER NOT NULL,
+      points INTEGER NOT NULL,
+      rebounds INTEGER,
+      assists INTEGER,
+      FOREIGN KEY (playerId) REFERENCES Player(id),
+      FOREIGN KEY (matchId) REFERENCES Match(id)
+    );
+  '''
+      '''
     CREATE TABLE AfterMatch (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       matchId INTEGER NOT NULL,
       totalPoints INTEGER NOT NULL,
       totalFouls INTEGER NOT NULL,
-      durationMatch TEXT NOT NULL,
+      durationMatch INTEGER NOT NULL,
       winner VARCHAR(50) NOT NULL,
       pointsDifference INTEGER NOT NULL,
       totalRebounds INTEGER NOT NULL,
@@ -49,16 +64,16 @@ const createTables = [
   '''
 ];
 
-
 const insertRegisters = [
   '''INSERT INTO Team (name) VALUES ('Team A');''',
   '''INSERT INTO Team (name) VALUES ('Team B');''',
-  '''INSERT INTO Match (teamAId, teamBId, pointsTeamA, pointsTeamB, foulsTeamA, foulsTeamB, timer, turnGame) VALUES (1, 2, 21, 19, 5, 4, '2024-09-26T18:42:16.822717', 1);''',
-  '''INSERT INTO AfterMatch (matchId, totalPoints, totalFouls, durationMatch, winner, pointsDifference, totalRebounds, totalAssists, totalTurnovers, isWinner) VALUES (1, 40, 9, '30:00', 'Team A', 2, 10, 8, 3, 1);''',
-  '''INSERT INTO Player (name, position, tShirtNumber, teamId) VALUES ('Player 1', 'Guard', 10, 1);''',
-  '''INSERT INTO Player (name, position, tShirtNumber, teamId) VALUES ('Player 2', 'Forward', 12, 1);''',
-  '''INSERT INTO Player (name, position, tShirtNumber, teamId) VALUES ('Player 3', 'Center', 5, 2);''',
-  '''INSERT INTO Player (name, position, tShirtNumber, teamId) VALUES ('Player 4', 'Forward', 7, 2);'''
+  '''INSERT INTO Player (name, position, tShirtNumber, rebounds, assists, teamId) VALUES ('Rubens', 'Ala-Armador', 10, 2, 3, 1);''',
+  '''INSERT INTO Player (name, position, tShirtNumber, rebounds, assists, teamId) VALUES ('Hélio', 'Armador', 12, 3, 1, 1);''',
+  '''INSERT INTO Player (name, position, tShirtNumber, rebounds, assists, teamId) VALUES ('Gustavo', 'Pívô', 5, 0, 0, 2);''',
+  '''INSERT INTO Player (name, position, tShirtNumber, rebounds, assists, teamId) VALUES ('Mateus Back', 'Ala-Pivô', 7, 1, 1, 2);''',
+  '''INSERT INTO Match (teamAId, teamBId, pointsTeamA, pointsTeamB, foulsTeamA, foulsTeamB, timer, assists, turnGame, isCompleted) VALUES (1, 2, 100, 90, 15, 10, 600, 25, 1, 1);''',
+  '''INSERT INTO PlayerMatchStats (playerId, matchId, points, rebounds, assists) VALUES (1, 1, 30, 2, 3);''',
+  '''INSERT INTO PlayerMatchStats (playerId, matchId, points, rebounds, assists) VALUES (2, 1, 25, 3, 1);''',
+  '''INSERT INTO PlayerMatchStats (playerId, matchId, points, rebounds, assists) VALUES (3, 1, 20, 0, 0);''',
+  '''INSERT INTO PlayerMatchStats (playerId, matchId, points, rebounds, assists) VALUES (4, 1, 25, 1, 1);'''
 ];
-
-

@@ -15,7 +15,7 @@ main() {
       createTables.forEach(db.execute);
       insertRegisters.forEach(db.execute);
     });
-    var list = await db.rawQuery('SELECT * FROM player');
-    expect(list.length, insertRegisters.length);
+    var list = await db.rawQuery('SELECT * FROM Player');
+    expect(list.length, 4); // 4 players no banco
   });
 }

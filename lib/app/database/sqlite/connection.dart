@@ -10,12 +10,21 @@ class Connection {
     if (!isOpened) {
       var path = join(await getDatabasesPath(), 'basketball.db');
 
-      _db = await openDatabase(path, version: 1, onCreate: (db, version) async {
-        createTables.forEach(db.execute);
-        insertRegisters.forEach(db.execute);
+      await deleteDatabase(path);
 
-        await db.execute('PRAGMA foreign_keys=ON');
-      });
+      _db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (db, version) async {
+          for (var table in createTables) {
+            await db.execute(table);
+          }
+          for (var register in insertRegisters) {
+            await db.execute(register);
+          }
+          await db.execute('PRAGMA foreign_keys=ON');
+        },
+      );
 
       isOpened = true;
     }

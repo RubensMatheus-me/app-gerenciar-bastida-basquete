@@ -5,7 +5,6 @@ import 'package:basketball_statistics/app/widget/player_list.dart';
 import 'package:basketball_statistics/app/widget/team_list.dart';
 import 'package:basketball_statistics/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,11 +16,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
-        Routes.menu : (context) => Menu(),
-        Routes.teamList : (context) => TeamList(),
+        Routes.menu: (context) => Menu(),
+        Routes.startMatch: (context) => Menu(),
+        Routes.teamList: (context) => TeamList(),
         Routes.addTeam: (context) => AddTeam(),
-        Routes.playerList: (context) => PlayerList(),
-        Routes.addPlayer: (context) => AddPlayer()
+        Routes.addPlayer: (context) => AddPlayer(),
+        Routes.playerList: (context) {
+          final teamId = ModalRoute.of(context)!.settings.arguments as int;
+          return PlayerList(teamId: teamId);
+        },
       },
     );
   }

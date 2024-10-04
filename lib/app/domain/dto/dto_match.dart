@@ -1,19 +1,18 @@
 class DTOMatch {
-  int id;
+  int? id;
   int teamAId;
   int teamBId;
   int foulsTeamA;
   int foulsTeamB;
   int pointsTeamA;
   int pointsTeamB;
+  int timer;
   int assists;
-  int turnovers;
-  DateTime startTime;
-  DateTime? endTime;
+  int turnGame;
   bool isCompleted;
 
   DTOMatch({
-    required this.id,
+    this.id,
     required this.teamAId,
     required this.teamBId,
     required this.foulsTeamA,
@@ -21,15 +20,13 @@ class DTOMatch {
     required this.pointsTeamA,
     required this.pointsTeamB,
     required this.assists,
-    required this.turnovers,
-    required this.startTime,
-    this.endTime,
+    required this.timer,
+    required this.turnGame,
     required this.isCompleted,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'teamAId': teamAId,
       'teamBId': teamBId,
       'foulsTeamA': foulsTeamA,
@@ -37,9 +34,8 @@ class DTOMatch {
       'pointsTeamA': pointsTeamA,
       'pointsTeamB': pointsTeamB,
       'assists': assists,
-      'turnovers': turnovers,
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime?.toIso8601String(),
+      'timer': timer,
+      'turnGame': turnGame,
       'isCompleted': isCompleted ? 1 : 0,
     };
   }
@@ -54,9 +50,8 @@ class DTOMatch {
       pointsTeamA: map['pointsTeamA'],
       pointsTeamB: map['pointsTeamB'],
       assists: map['assists'],
-      turnovers: map['turnovers'],
-      startTime: DateTime.parse(map['startTime']),
-      endTime: map['endTime'] != null ? DateTime.parse(map['endTime']) : null,
+      turnGame: map['turnGame'] ?? 1,
+      timer: map['timer'] ?? 0,
       isCompleted: map['isCompleted'] == 1,
     );
   }
