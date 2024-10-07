@@ -8,7 +8,6 @@ import 'package:sqflite/sqflite.dart';
 class ImpDaoPlayer implements IDAOPlayer {
   late Database _db;
 
-  ImpDaoPlayer(this._db);
 
   @override
   Future<int> insertPlayer(DTOPlayer player) async {

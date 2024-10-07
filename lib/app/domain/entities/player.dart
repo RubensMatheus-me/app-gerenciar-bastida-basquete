@@ -3,7 +3,7 @@ import 'package:basketball_statistics/app/domain/entities/team.dart';
 import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
 
 class Player {
-  late dynamic id;
+  late dynamic? id;
   late String name;
   late String position;
   late int tShirtNumber;
@@ -14,7 +14,7 @@ class Player {
   late IDAOPlayer dao;
 
   Player(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.teamId,
       required this.position,

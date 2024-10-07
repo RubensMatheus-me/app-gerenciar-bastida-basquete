@@ -2,7 +2,9 @@ import 'package:basketball_statistics/app/widget/add_player.dart';
 import 'package:basketball_statistics/app/widget/add_team.dart';
 import 'package:basketball_statistics/app/widget/menu.dart';
 import 'package:basketball_statistics/app/widget/player_list.dart';
+import 'package:basketball_statistics/app/widget/start_match.dart';
 import 'package:basketball_statistics/app/widget/team_list.dart';
+import 'package:basketball_statistics/app/widget/select_teams.dart'; // Importar a nova tela
 import 'package:basketball_statistics/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
         Routes.menu: (context) => Menu(),
-        Routes.startMatch: (context) => Menu(),
         Routes.teamList: (context) => TeamList(),
         Routes.addTeam: (context) => AddTeam(),
         Routes.addPlayer: (context) => AddPlayer(),
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           final teamId = ModalRoute.of(context)!.settings.arguments as int;
           return PlayerList(teamId: teamId);
         },
+        Routes.selectTeam: (context) => SelectTeams(),
       },
     );
   }

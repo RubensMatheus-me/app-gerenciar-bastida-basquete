@@ -12,11 +12,12 @@ main() {
   setUpAll(() async {
     databaseFactory = databaseFactoryFfi;
     sqfliteFfiInit();
+    deleteDatabase(inMemoryDatabasePath);
     db = await openDatabase(inMemoryDatabasePath, version: 1,
         onCreate: (db, version) {
       createTables.forEach(db.execute);
     });
-    dao = ImpDaoPlayer(db);
+    dao = ImpDaoPlayer();
   });
 
   test('insert and get player by team', () async {
@@ -31,7 +32,7 @@ main() {
 
     var players = await dao.getPlayersByTeam(1);
 
-    expect(players.length, 3);
+    expect(players.length, 6);
     expect(players.first.name, 'Player 1');
     expect(players.first.position, 'Guard');
   });

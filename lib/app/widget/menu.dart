@@ -42,7 +42,7 @@ class Menu extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            getButton(context, Routes.startMatch, 'Começar Partida',
+            getButton(context, Routes.selectTeam, 'Começar Partida',
                 Icons.play_arrow),
             getButton(
                 context, Routes.addTeam, 'Adicionar Time', Icons.group_add),
