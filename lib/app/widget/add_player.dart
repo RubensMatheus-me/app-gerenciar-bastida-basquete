@@ -6,6 +6,8 @@ import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AddPlayer extends StatefulWidget {
+  const AddPlayer({super.key});
+
   @override
   _AddPlayerState createState() => _AddPlayerState();
 }
@@ -47,7 +49,7 @@ class _AddPlayerState extends State<AddPlayer> {
       ImpDaoPlayer().insertPlayer(newPlayer).then((_) {
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Jogador adicionado com sucesso!')),
+          const SnackBar(content: Text('Jogador adicionado com sucesso!')),
         );
         Navigator.pop(context);
       }).catchError((error) {
@@ -62,10 +64,10 @@ class _AddPlayerState extends State<AddPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adicionar Jogador'),
+        title: const Text('Adicionar Jogador'),
       ),
       body: _teams.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -73,7 +75,7 @@ class _AddPlayerState extends State<AddPlayer> {
                 child: Column(
                   children: [
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Nome do Jogador'),
+                      decoration: const InputDecoration(labelText: 'Nome do Jogador'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Por favor, insira o nome do jogador';
@@ -83,7 +85,7 @@ class _AddPlayerState extends State<AddPlayer> {
                       onSaved: (value) => _playerName = value,
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Posição'),
+                      decoration: const InputDecoration(labelText: 'Posição'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Por favor, insira a posição';
@@ -93,7 +95,7 @@ class _AddPlayerState extends State<AddPlayer> {
                       onSaved: (value) => _position = value,
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Número da Camisa'),
+                      decoration: const InputDecoration(labelText: 'Número da Camisa'),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -104,7 +106,7 @@ class _AddPlayerState extends State<AddPlayer> {
                       onSaved: (value) => _tShirtNumber = int.tryParse(value!),
                     ),
                     DropdownButtonFormField<int>(
-                      decoration: InputDecoration(labelText: 'Time'),
+                      decoration: const InputDecoration(labelText: 'Time'),
                       items: _teams.map((team) {
                         return DropdownMenuItem<int>(
                           value: team.id,
@@ -124,10 +126,10 @@ class _AddPlayerState extends State<AddPlayer> {
                       },
                       value: _teamId,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _submitForm,
-                      child: Text('Adicionar Jogador'),
+                      child: const Text('Adicionar Jogador'),
                     ),
                   ],
                 ),

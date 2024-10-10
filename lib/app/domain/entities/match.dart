@@ -57,7 +57,7 @@ class Match {
 
   validateMatchDuration(DateTime startTime, DateTime endTime) {
     final duration = endTime.difference(startTime);
-    if (duration > Duration(minutes: 10)) {
+    if (duration > const Duration(minutes: 10)) {
       throw Exception("A partida não pode ultrapassar 10 minutos");
     }
   }
@@ -72,9 +72,10 @@ class Match {
   }
 
   validatePoints() {
-    if (pointsTeamA >= 21 || pointsTeamB >= 21)
+    if (pointsTeamA >= 21 || pointsTeamB >= 21) {
       throw Exception(
           "A partida terminou porque uma equipe alcançou 21 pontos");
+    }
   }
 
   validateFouls() {

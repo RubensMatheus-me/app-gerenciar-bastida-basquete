@@ -2,7 +2,6 @@ import 'package:basketball_statistics/app/database/script.dart';
 import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_player.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 main() {

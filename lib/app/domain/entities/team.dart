@@ -26,9 +26,10 @@ class Team {
   }
 
   validateTeamPlayer(List<Player> players) {
-    if (players.isEmpty || players.length >= 5)
+    if (players.isEmpty || players.length >= 5) {
       throw Exception(
           "O time deve conter a quantidade correta de jogadores para o inicio de partida");
+    }
   }
 
 }

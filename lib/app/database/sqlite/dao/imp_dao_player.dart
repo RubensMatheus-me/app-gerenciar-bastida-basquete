@@ -1,8 +1,6 @@
 import 'package:basketball_statistics/app/database/sqlite/connection.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
-import 'package:basketball_statistics/app/domain/entities/player.dart';
 import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
-import 'package:basketball_statistics/app/domain/entities/team.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ImpDaoPlayer implements IDAOPlayer {

@@ -1,6 +1,5 @@
 import 'package:basketball_statistics/app/database/sqlite/connection.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_afterMatch.dart';
-import 'package:basketball_statistics/app/domain/entities/player.dart';
 import 'package:basketball_statistics/app/domain/interface/dao_afterMatch.dart';
 import 'package:sqflite/sqflite.dart';
 

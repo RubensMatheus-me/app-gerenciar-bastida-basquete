@@ -1,5 +1,4 @@
 import '../dto/dto_team.dart';
-import '../entities/team.dart';
 
 abstract class IDAOTeam {
   Future<int> insertTeam(DTOTeam team); 

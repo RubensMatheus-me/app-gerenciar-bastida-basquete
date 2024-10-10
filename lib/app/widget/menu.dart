@@ -2,6 +2,8 @@ import 'package:basketball_statistics/routes.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
+  const Menu({super.key});
+
   Widget getButton(
       BuildContext context, String route, String text, IconData icon) {
     return Padding(
@@ -9,11 +11,11 @@ class Menu extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: () => Navigator.pushNamed(context, route),
         icon: Icon(icon, size: 24),
-        label: Text(text, style: TextStyle(fontSize: 18)),
+        label: Text(text, style: const TextStyle(fontSize: 18)),
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: Colors.blueAccent,
-          minimumSize: Size(double.infinity, 60),
+          minimumSize: const Size(double.infinity, 60),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -28,11 +30,11 @@ class Menu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text('Menu',
+        title: const Text('Menu',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
       ),
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.blue[100]!, Colors.white],

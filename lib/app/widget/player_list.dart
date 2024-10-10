@@ -5,19 +5,19 @@ import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_team.dart'
 class PlayerList extends StatelessWidget {
   final int teamId;
 
-  PlayerList({required this.teamId});
+  const PlayerList({super.key, required this.teamId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Jogadores do Time'),
+        title: const Text('Jogadores do Time'),
       ),
       body: FutureBuilder<List<DTOPlayer>>(
         future: ImpDaoTeam().getPlayersForTeam(teamId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -25,7 +25,7 @@ class PlayerList extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Nenhum jogador encontrado'));
+            return const Center(child: Text('Nenhum jogador encontrado'));
           }
 
           List<DTOPlayer> players = snapshot.data!;
@@ -34,7 +34,7 @@ class PlayerList extends StatelessWidget {
             itemBuilder: (context, index) {
               var player = players[index];
               return ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: Text(player.name),
                 subtitle: Text('Posição: ${player.position}'),
               );

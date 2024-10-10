@@ -1,5 +1,4 @@
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
-import 'package:basketball_statistics/app/domain/entities/player.dart';
 
 abstract class IDAOPlayer {
   Future<int> insertPlayer(DTOPlayer player);

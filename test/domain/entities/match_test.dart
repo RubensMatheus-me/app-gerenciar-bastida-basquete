@@ -13,7 +13,7 @@ void main() {
 
     test('Match duration validation error', () {
       final startTime = DateTime.now();
-      final endTime = startTime.add(Duration(minutes: 11));
+      final endTime = startTime.add(const Duration(minutes: 11));
       expect(() => MatchDurationValidationTest(startTime: startTime, endTime: endTime), throwsException);
     });
 
@@ -73,7 +73,7 @@ class MatchDurationValidationTest {
 
   void validateMatchDuration(DateTime startTime, DateTime endTime) {
     final duration = endTime.difference(startTime);
-    if (duration > Duration(minutes: 10)) {
+    if (duration > const Duration(minutes: 10)) {
       throw Exception("A partida não pode ultrapassar 10 minutos");
     }
   }

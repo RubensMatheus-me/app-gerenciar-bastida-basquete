@@ -21,7 +21,7 @@ void main() {
 
     final dao = ImpDaoAfterMatch(db);
 
-    final matchId = 1;
+    const matchId = 1;
 
     final DTOAfterMatch afterMatch = await dao.getMatchStatistics(matchId);
 

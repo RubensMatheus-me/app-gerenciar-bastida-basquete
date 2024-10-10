@@ -6,6 +6,8 @@ import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart'; // Importando o DTO de jogadores
 
 class SelectTeams extends StatefulWidget {
+  const SelectTeams({super.key});
+
   @override
   _SelectTeams createState() => _SelectTeams();
 }
@@ -56,13 +58,13 @@ class _SelectTeams extends State<SelectTeams> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, selecione dois times.')),
+        const SnackBar(content: Text('Por favor, selecione dois times.')),
       );
     }
   }
 
   List<Widget> _buildPlayerList(List<DTOPlayer> players) {
-    if (players.isEmpty) return [Text('Nenhum jogador selecionado.')];
+    if (players.isEmpty) return [const Text('Nenhum jogador selecionado.')];
 
     return players.map((player) => Text(player.name)).toList(); 
   }
@@ -71,10 +73,10 @@ class _SelectTeams extends State<SelectTeams> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecionar Times'),
+        title: const Text('Selecionar Times'),
       ),
       body: _teams.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Center(
@@ -87,7 +89,7 @@ class _SelectTeams extends State<SelectTeams> {
                         Column(
                           children: [
                             DropdownButton<DTOTeam>(
-                              hint: Text('Selecione o Time A'),
+                              hint: const Text('Selecione o Time A'),
                               value: _selectedTeamA,
                               onChanged: (value) {
                                 setState(() {
@@ -102,7 +104,7 @@ class _SelectTeams extends State<SelectTeams> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: _buildPlayerList(_playersTeamA),
@@ -112,7 +114,7 @@ class _SelectTeams extends State<SelectTeams> {
                         Column(
                           children: [
                             DropdownButton<DTOTeam>(
-                              hint: Text('Selecione o Time B'),
+                              hint: const Text('Selecione o Time B'),
                               value: _selectedTeamB,
                               onChanged: (value) {
                                 setState(() {
@@ -127,7 +129,7 @@ class _SelectTeams extends State<SelectTeams> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: _buildPlayerList(_playersTeamB),
@@ -136,10 +138,10 @@ class _SelectTeams extends State<SelectTeams> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _startMatch,
-                      child: Text('Iniciar Partida'),
+                      child: const Text('Iniciar Partida'),
                     ),
                   ],
                 ),

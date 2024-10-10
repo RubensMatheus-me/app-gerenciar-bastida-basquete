@@ -1,20 +1,53 @@
 import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_team.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
-import 'package:flutter/material.dart';
+import 'package:basketball_statistics/app/widget/add_team.dart';
 import 'package:basketball_statistics/routes.dart';
+import 'package:flutter/material.dart';
 
-class TeamList extends StatelessWidget {
+class TeamList extends StatefulWidget {
+  @override
+  TeamListState createState() => TeamListState();
+}
+
+class TeamListState extends State<TeamList> {
+  List<DTOTeam> _teams = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTeams();
+  }
+
+  void loadTeams() {
+    ImpDaoTeam().getAllTeams().then((teams) {
+      setState(() {
+        _teams = teams;
+      });
+    });
+  }
+
+  void _navigateToAddTeam() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTeam(refreshTeams: loadTeams),
+      ),
+    ).then((_) {
+      loadTeams();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Times'),
+        title: const Text('Lista de Times'),
       ),
       body: FutureBuilder<List<DTOTeam>>(
         future: ImpDaoTeam().getAllTeams(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -22,7 +55,7 @@ class TeamList extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Nenhum time encontrado'));
+            return const Center(child: Text('Nenhum time encontrado'));
           }
 
           List<DTOTeam> teams = snapshot.data!;
@@ -31,15 +64,15 @@ class TeamList extends StatelessWidget {
             itemBuilder: (context, index) {
               var team = teams[index];
               return ListTile(
-                leading: Icon(Icons.sports_basketball),
-                title: Text(team.name,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                leading: const Icon(Icons.sports_basketball),
+                title: Text(team.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('ID: ${team.id}'),
                 onTap: () {
+ 
                   Navigator.pushNamed(
                     context,
                     Routes.playerList,
-                    arguments: team.id!,
+                    arguments: team.id!, 
                   );
                 },
               );
