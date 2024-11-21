@@ -5,6 +5,8 @@ import 'package:basketball_statistics/routes.dart';
 import 'package:flutter/material.dart';
 
 class TeamList extends StatefulWidget {
+  const TeamList({super.key});
+
   @override
   TeamListState createState() => TeamListState();
 }

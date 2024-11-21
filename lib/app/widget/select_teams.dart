@@ -1,9 +1,10 @@
+import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_match.dart';
 import 'package:basketball_statistics/app/widget/start_match.dart';
 import 'package:flutter/material.dart';
 import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_team.dart';
-import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_player.dart'; // Importando o DAO de jogadores
+import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_player.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
-import 'package:basketball_statistics/app/domain/dto/dto_player.dart'; // Importando o DTO de jogadores
+import 'package:basketball_statistics/app/domain/dto/dto_player.dart'; 
 
 class SelectTeams extends StatefulWidget {
   const SelectTeams({super.key});
@@ -45,22 +46,32 @@ class _SelectTeams extends State<SelectTeams> {
     }
   }
 
-  void _startMatch() {
+  void _startMatch() async {
     if (_selectedTeamA != null && _selectedTeamB != null) {
+    final daoMatch = ImpDaoMatch();
+    final match = await daoMatch.getMatchForTeams(_selectedTeamA!.id!, _selectedTeamB!.id!);
+
+    if (match != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => StartMatch(
             teamA: _selectedTeamA!,
             teamB: _selectedTeamB!,
+            matchId: match.id!, 
           ),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, selecione dois times.')),
+        const SnackBar(content: Text('Erro: Não foi encontrada uma partida para essas equipes.')),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Por favor, selecione dois times.')),
+    );
+  }
   }
 
   List<Widget> _buildPlayerList(List<DTOPlayer> players) {

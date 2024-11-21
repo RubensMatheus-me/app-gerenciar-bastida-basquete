@@ -1,7 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:basketball_statistics/app/domain/entities/player.dart';
-import 'package:basketball_statistics/app/domain/entities/team.dart';
-import 'package:basketball_statistics/app/domain/entities/match.dart';
 
 void main() {
   group('Match validation', () {

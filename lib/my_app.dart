@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
-        Routes.menu: (context) => Menu(),
+        Routes.menu: (context) => const Menu(),
         Routes.teamList: (context) => TeamList(),
         Routes.addTeam: (context) => AddTeam(
           refreshTeams: () {
@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
             teamListState?.loadTeams();
           },
         ),
-        Routes.addPlayer: (context) => AddPlayer(),
+        Routes.addPlayer: (context) => const AddPlayer(),
         Routes.playerList: (context) {
           final teamId = ModalRoute.of(context)!.settings.arguments as int;
           return PlayerList(teamId: teamId);
         },
-        Routes.selectTeam: (context) => SelectTeams(),
+        Routes.selectTeam: (context) => const SelectTeams(),
       },
     );
   }

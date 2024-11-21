@@ -1,21 +1,23 @@
-import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_match.dart';
-import 'package:basketball_statistics/app/domain/dto/dto_match.dart';
+import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
 import 'package:flutter/material.dart';
+import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_afterMatch.dart';
+import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_match.dart';
+import 'package:basketball_statistics/app/widget/results.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
-import 'package:basketball_statistics/app/domain/interface/dao_player.dart';
 import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_player.dart';
 import 'package:basketball_statistics/app/widget/player_miniature.dart';
-import 'package:basketball_statistics/app/widget/results.dart'; // Importar a tela de resultados
 
 class StartMatch extends StatefulWidget {
   final DTOTeam teamA;
   final DTOTeam teamB;
+  final int matchId;
 
   const StartMatch({
     Key? key,
     required this.teamA,
     required this.teamB,
+    required this.matchId,
   }) : super(key: key);
 
   @override
@@ -24,31 +26,34 @@ class StartMatch extends StatefulWidget {
 
 class _StartMatchState extends State<StartMatch> {
   late IDAOPlayer _daoPlayer;
-  late int matchId;
   List<DTOPlayer> _playersTeamA = [];
   List<DTOPlayer> _playersTeamB = [];
   DTOPlayer? _selectedPlayer;
   final Map<int, Offset> _playerPositions = {};
+  late int _matchId;
 
   @override
   void initState() {
     super.initState();
     _daoPlayer = ImpDaoPlayer();
-
     _loadPlayers();
+  }
+
+  Future<void> _initializeMatchId() async {
+    final daoMatch = ImpDaoMatch();
+    final match = await daoMatch.getMatchForTeams(widget.teamA.id!, widget.teamB.id!);
+    if (match != null) {
+      setState(() {
+        _matchId = match.id!;
+      });
+    } else {
+      throw Exception('Partida não encontrada para essas equipes');
+    }
   }
 
   Future<void> _loadPlayers() async {
     _playersTeamA = await _daoPlayer.getPlayersByTeam(widget.teamA.id!);
     _playersTeamB = await _daoPlayer.getPlayersByTeam(widget.teamB.id!);
-
-    for (int i = 0; i < _playersTeamA.length; i++) {
-      _playerPositions[_playersTeamA[i].id!] = Offset(100, 100 + i * 60);
-    }
-    for (int i = 0; i < _playersTeamB.length; i++) {
-      _playerPositions[_playersTeamB[i].id!] = Offset(300, 100 + i * 60);
-    }
-
     setState(() {});
   }
 
@@ -58,15 +63,63 @@ class _StartMatchState extends State<StartMatch> {
     });
   }
 
-  void _addPoints(int points) {
+  void _registerScore(int points) {
     if (_selectedPlayer != null) {
-      print("Jogador ${_selectedPlayer!.name} fez $points pontos");
+      print("Jogador ${_selectedPlayer!.name} marcou $points pontos!");
     } else {
-      print("Nenhum jogador selecionado");
+      print("Nenhum jogador selecionado.");
     }
   }
 
-  void _endMatch() {}
+  Widget _buildQuadrant({
+    required Color color,
+    required double left,
+    required double top,
+    required double width,
+    required double height,
+    required int points,
+  }) {
+    return Positioned(
+      left: left,
+      top: top,
+      child: GestureDetector(
+        onTap: () {
+          if (_selectedPlayer != null) {
+            _registerScore(points);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Selecione um jogador antes de marcar pontos!')),
+            );
+          }
+        },
+        child: Container(
+          width: width,
+          height: height,
+          color: color.withOpacity(0.3),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _finishMatch(BuildContext context) async {
+    final daoMatch = ImpDaoMatch();
+    final match = await daoMatch.getMatchById(widget.matchId); 
+    if (match != null) {
+      match.isCompleted = true;
+      await daoMatch.updateMatch(match);
+
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Results(
+          matchId: widget.matchId, 
+          dao: ImpDaoAfterMatch(),
+        ),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao finalizar a partida.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,57 +135,39 @@ class _StartMatchState extends State<StartMatch> {
             width: double.infinity,
             height: double.infinity,
           ),
+          _buildQuadrant(
+            color: Colors.green,
+            left: 620,
+            top: 150,
+            width: 100,
+            height: 100,
+            points: 2,
+          ),
+          _buildQuadrant(
+            color: Colors.red,
+            left: 300,
+            top: 150,
+            width: 100,
+            height: 100,
+            points: 3,
+          ),
+          _buildQuadrant( 
+            color: Colors.red,
+            left: 950,
+            top: 150,
+            width: 100,
+            height: 100,
+            points: 3,
+          ),
+          // Jogadores
           ...buildPlayerWidgets(_playersTeamA),
           ...buildPlayerWidgets(_playersTeamB),
-          Positioned(
-            bottom: 16,
-            left: 16,
-            child: Column(
-              children: [
-                FloatingActionButton(
-                  onPressed: () => _addPoints(1),
-                  child: const Text('+1'),
-                ),
-                const SizedBox(height: 8),
-                FloatingActionButton(
-                  onPressed: () => _addPoints(2),
-                  child: const Text('+2'),
-                ),
-                const SizedBox(height: 8),
-                FloatingActionButton(
-                  onPressed: () => _addPoints(3),
-                  child: const Text('+3'),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: Column(
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    if (_selectedPlayer != null) {
-                      print("Assistencia de ${_selectedPlayer!.name}");
-                    }
-                  },
-                  child: const Text('Assist'),
-                ),
-                const SizedBox(height: 8),
-                FloatingActionButton(
-                  onPressed: () {
-                    if (_selectedPlayer != null) {
-                      print("Rebote de ${_selectedPlayer!.name}");
-                    }
-                  },
-                  child: const Text('Rebote'),
-                ),
-              ],
-            ),
-          ),
-          // Botão "Fim"
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _finishMatch(context),
+        child: Icon(Icons.check),
+        tooltip: 'Finalizar Partida',
       ),
     );
   }
@@ -152,17 +187,20 @@ class _StartMatchState extends State<StartMatch> {
         child: GestureDetector(
           onTap: () => _selectPlayer(player),
           child: Draggable(
-            feedback: Hero(
-              tag: 'player_${player.id}',
-              child: Material(
-                color: const Color.fromARGB(0, 0, 0, 0),
-                child: PlayerMiniature(
-                  name: player.name,
-                  isSelected: _selectedPlayer?.id == player.id,
-                ),
+            feedback: Material(
+              color: Colors.transparent,
+              child: PlayerMiniature(
+                name: player.name,
+                isSelected: _selectedPlayer?.id == player.id,
               ),
             ),
-            childWhenDragging: Container(),
+            childWhenDragging: Opacity(
+              opacity: 0.5, 
+              child: PlayerMiniature(
+                name: player.name,
+                isSelected: _selectedPlayer?.id == player.id,
+              ),
+            ),
             onDragEnd: (details) {
               setState(() {
                 _playerPositions[player.id!] = Offset(

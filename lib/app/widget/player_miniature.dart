@@ -21,7 +21,7 @@ class PlayerMiniature extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             name,
-            style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
           ),
         ],
       ),

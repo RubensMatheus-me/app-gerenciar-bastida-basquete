@@ -27,8 +27,9 @@ class AfterMatch extends Match {
     required this.durationMatch,
     required this.totalRebounds,
     required this.totalAssists,
-    required this.totalTurnovers,
-  }) {
+    required this.totalTurnovers, 
+    required super.basketball,
+  }){
     calculateTotalPoints();
     calculateTotalFouls();
     determineWinner();

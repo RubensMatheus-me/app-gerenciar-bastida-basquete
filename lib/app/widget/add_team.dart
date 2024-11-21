@@ -6,7 +6,7 @@ import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 class AddTeam extends StatefulWidget {
   final Function refreshTeams;
 
-  AddTeam({required this.refreshTeams});
+  const AddTeam({super.key, required this.refreshTeams});
 
   @override
   _AddTeamState createState() => _AddTeamState();
@@ -26,7 +26,7 @@ class _AddTeamState extends State<AddTeam> {
 
       ImpDaoTeam().insertTeam(newTeam).then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Time criado com sucesso!')),
+          const SnackBar(content: Text('Time criado com sucesso!')),
         );
         widget.refreshTeams();
         Navigator.pop(context);
@@ -43,7 +43,7 @@ class _AddTeamState extends State<AddTeam> {
       validator: (value) => team.validTeamName(value ?? ''),
       onSaved: (newValue) => team.name = newValue ?? '',
       initialValue: team.name,
-      decoration: InputDecoration(labelText: 'Nome do time'),
+      decoration: const InputDecoration(labelText: 'Nome do time'),
     );
   }
 
@@ -51,7 +51,7 @@ class _AddTeamState extends State<AddTeam> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adicionar Time'),
+        title: const Text('Adicionar Time'),
         centerTitle: true,
       ),
       body: Padding(
@@ -61,7 +61,7 @@ class _AddTeamState extends State<AddTeam> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 'Crie um novo time',
                 style: TextStyle(
                   fontSize: 24,
@@ -69,9 +69,9 @@ class _AddTeamState extends State<AddTeam> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nome do Time',
                   border: OutlineInputBorder(),
                 ),
@@ -85,14 +85,14 @@ class _AddTeamState extends State<AddTeam> {
                   _teamName = value;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Criar'),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  textStyle: TextStyle(fontSize: 18),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: Text('Criar'),
               ),
             ],
           ),

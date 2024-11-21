@@ -1,7 +1,4 @@
-import 'dart:async';
-
-import 'package:basketball_statistics/app/domain/entities/afterMatch.dart';
-import 'package:basketball_statistics/app/domain/entities/player.dart';
+import 'package:basketball_statistics/app/domain/entities/basketball.dart';
 import 'package:basketball_statistics/app/domain/entities/team.dart';
 
 class Match {
@@ -18,20 +15,22 @@ class Match {
   late int assists;
   late int turnovers;
   late DateTime timer;
-  //late bool isBallInPlay;
+  late Basketball basketball;
   late bool matchStarted;
   late bool isCompleted;
 
-  Match(
-      {required this.id,
-      required this.teamA,
-      required this.teamB,
-      required this.fouls,
-      required this.turnGame,
-      required this.pointsTeamA,
-      required this.pointsTeamB,
-      required this.isCompleted,
-      required this.timer}) {
+  Match({
+    required this.id,
+    required this.teamA,
+    required this.teamB,
+    required this.fouls,
+    required this.turnGame,
+    required this.pointsTeamA,
+    required this.pointsTeamB,
+    required this.isCompleted,
+    required this.timer,
+    required this.basketball, // Certifique-se de inicializar a bola de basquete
+  }) {
     validateTeams();
   }
 
@@ -39,15 +38,25 @@ class Match {
     if (teamA == teamB) {
       throw Exception("Os times A e B não podem ser o mesmo time");
     }
-    //validateTeamPlayers(teamA);
-    //validateTeamPlayers(teamB);
   }
 
-//validateTeamPlayers(Team team) {
-//  if (team.players.length < 3 || team.players.length > 4) {
-//    throw Exception("Cada time deve ter entre 3 e 4 jogadores (3 titulares e 1 reserva)");
-//  }
-//}
+  void scorePoints(int points, Team team) {
+    if (team == teamA) {
+      pointsTeamA += points;
+    } else if (team == teamB) {
+      pointsTeamB += points;
+    }
+    validatePoints();
+  }
+
+  void scoreWithBall() {
+    /*
+    if (basketball.player != null) {
+      int points = basketball.determinePoints();
+      scorePoints(points, basketball.player!.team);
+    }
+    */
+  }
 
   startMatch(DateTime startTime, DateTime endTime) {
     if (matchStarted) throw Exception("A partida já foi iniciada");
@@ -62,19 +71,9 @@ class Match {
     }
   }
 
-  scorePoints(int points, Team team) {
-    if (team == teamA) {
-      pointsTeamA += points;
-    } else if (team == teamB) {
-      pointsTeamB += points;
-    }
-    validatePoints();
-  }
-
   validatePoints() {
     if (pointsTeamA >= 21 || pointsTeamB >= 21) {
-      throw Exception(
-          "A partida terminou porque uma equipe alcançou 21 pontos");
+      throw Exception("A partida terminou porque uma equipe alcançou 21 pontos");
     }
   }
 
@@ -83,7 +82,7 @@ class Match {
   }
 
   endMatch() {
-    //parar cronometro e definir vencedor ou tempo extra
+    // parar cronometro e definir vencedor ou tempo extra
   }
 
   commitFouls() {
@@ -102,16 +101,4 @@ class Match {
   commitTurnover() {
     turnovers++;
   }
-
-  /*
-  makeSubstitution(Player outPlayer, Player inPlayer) {
-    validateSubstitution(isBallInPlay);
-  }
-
-  validateSubstitution(bool isBallInPlay) {
-    if (isBallInPlay)
-      throw Exception(
-          "Substituições só podem ser feitas quando a bola não está em jogo");
-  }
-  */
 }

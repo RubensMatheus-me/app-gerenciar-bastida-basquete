@@ -4,27 +4,27 @@ import 'package:basketball_statistics/app/domain/dto/dto_afterMatch.dart';
 
 class Results extends StatelessWidget {
   final int matchId;
-  final IDaoAftermatch dao; // Assumindo que você vai passar o DAO também
+  final IDaoAftermatch dao; 
 
-  Results({Key? key, required this.matchId, required this.dao})
+  const Results({Key? key, required this.matchId, required this.dao})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Resultados da Partida'),
+        title: const Text('Resultados da Partida'),
       ),
       body: FutureBuilder<DTOAfterMatch>(
         future: dao.getMatchStatistics(matchId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
                 child: Text('Erro ao carregar resultados: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
-            return Center(child: Text('Nenhum resultado encontrado.'));
+            return const Center(child: Text('Nenhum resultado encontrado.'));
           }
 
           final stats = snapshot.data!;
@@ -36,21 +36,21 @@ class Results extends StatelessWidget {
               children: [
                 Text('Vencedor: ${stats.winner}',
                     style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
+                        const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
                 Text('Total de Pontos: ${stats.totalPoints}',
-                    style: TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 20)),
                 Text('Diferença de Pontos: ${stats.pointsDifference}',
-                    style: TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 20)),
                 Text('Total de Faltas: ${stats.totalFouls}',
-                    style: TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 20)),
                 Text('Total de Rebotes: ${stats.totalRebounds}',
-                    style: TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 20)),
                 Text('Total de Assistências: ${stats.totalAssists}',
-                    style: TextStyle(fontSize: 20)),
-                SizedBox(height: 16),
+                    style: const TextStyle(fontSize: 20)),
+                const SizedBox(height: 16),
                 Text('Duração da Partida: ${stats.durationMatch}',
-                    style: TextStyle(fontSize: 20)),
+                    style: const TextStyle(fontSize: 20)),
               ],
             ),
           );

@@ -22,14 +22,14 @@ class Player {
       DTOPlayer? dto}) {
     this.dto =
         dto ?? DTOPlayer(name: '', position: '', tShirtNumber: 0, teamId: 0);
-    this.name = this.dto.name;
-    this.position = this.dto.position;
-    this.tShirtNumber = this.dto.tShirtNumber;
-    this.teamId = this.dto.teamId;
+    name = this.dto.name;
+    position = this.dto.position;
+    tShirtNumber = this.dto.tShirtNumber;
+    teamId = this.dto.teamId;
 
-    validatePlayerName(this.name!);
-    validatePlayerPosition(this.position!);
-    validateTshirtNumberPlayer(this.tShirtNumber!);
+    validatePlayerName(name!);
+    validatePlayerPosition(position!);
+    validateTshirtNumberPlayer(tShirtNumber!);
   }
 
   String? validatePlayerName(String? name) {

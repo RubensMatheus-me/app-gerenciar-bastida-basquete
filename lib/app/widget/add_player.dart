@@ -15,7 +15,7 @@ class AddPlayer extends StatefulWidget {
 
 class _AddPlayerState extends State<AddPlayer> {
   final _formKey = GlobalKey<FormState>();
-  final Player _player = Player(); // Instância do Player
+  final Player _player = Player(); 
 
   int? _teamId;
   List<DTOTeam> _teams = [];
@@ -64,7 +64,7 @@ class _AddPlayerState extends State<AddPlayer> {
       validator: _player.validatePlayerName,
       onSaved: (newValue) => _player.name = newValue!,
       initialValue: _player.name,
-      decoration: InputDecoration(labelText: 'Nome do jogador'),
+      decoration: const InputDecoration(labelText: 'Nome do jogador'),
     );
   }
 
@@ -73,7 +73,7 @@ class _AddPlayerState extends State<AddPlayer> {
       validator: _player.validatePlayerPosition,
       onSaved: (newValue) => _player.position = newValue!,
       initialValue: _player.position,
-      decoration: InputDecoration(labelText: 'Posição do jogador'),
+      decoration: const InputDecoration(labelText: 'Posição do jogador'),
     );
   }
 
@@ -86,7 +86,7 @@ class _AddPlayerState extends State<AddPlayer> {
       onSaved: (newValue) =>
           _player.tShirtNumber = int.tryParse(newValue ?? '')!,
       initialValue: _player.tShirtNumber?.toString() ?? '',
-      decoration: InputDecoration(labelText: 'Número da Camisa'),
+      decoration: const InputDecoration(labelText: 'Número da Camisa'),
       keyboardType: TextInputType.number,
     );
   }

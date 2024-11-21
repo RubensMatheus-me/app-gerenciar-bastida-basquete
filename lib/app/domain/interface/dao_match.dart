@@ -11,4 +11,5 @@ abstract class IDAOMatch {
   
   Future<List<DTOMatch>> getOngoingMatches();
 
+  Future<DTOMatch?> getMatchForTeams(int teamA, int teamB);
 }
