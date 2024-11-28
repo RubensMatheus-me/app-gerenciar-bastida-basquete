@@ -12,25 +12,27 @@ class ImpDaoAfterMatch implements IDaoAftermatch {
     _db = await Connection.openDb();
 
     final List<Map<String, dynamic>> result = await _db.rawQuery('''
-      SELECT 
-        Match.id as id,
-        (Match.pointsTeamA + Match.pointsTeamB) as totalPoints,
-        Match.timer as durationMatch,
-        (Match.foulsTeamA + Match.foulsTeamB) as totalFouls,
-        CASE 
-          WHEN Match.pointsTeamA > Match.pointsTeamB THEN TeamA.name
-          ELSE TeamB.name
-        END as winner,
-        ABS(Match.pointsTeamA - Match.pointsTeamB) as pointsDifference,
-        SUM(Player.rebounds) as totalRebounds,
-        SUM(Player.assists) as totalAssists
-      FROM Match
-      INNER JOIN Team AS TeamA ON Match.teamAId = TeamA.id
-      INNER JOIN Team AS TeamB ON Match.teamBId = TeamB.id
-      INNER JOIN Player ON (Player.teamId = TeamA.id OR Player.teamId = TeamB.id)
-      WHERE Match.id = ?
-      GROUP BY Match.id
-    ''', [matchId]);
+    SELECT 
+      Match.id AS id,
+      (Match.pointsTeamA + Match.pointsTeamB) AS totalPoints,
+      Match.timer AS durationMatch,
+      (Match.foulsTeamA + Match.foulsTeamB) AS totalFouls,
+      CASE 
+        WHEN Match.pointsTeamA > Match.pointsTeamB THEN TeamA.name
+        ELSE TeamB.name
+      END AS winner,
+      ABS(Match.pointsTeamA - Match.pointsTeamB) AS pointsDifference,
+      (SELECT SUM(PlayerMatchStats.rebounds) 
+      FROM PlayerMatchStats 
+      WHERE PlayerMatchStats.matchId = Match.id) AS totalRebounds,
+      (SELECT SUM(PlayerMatchStats.assists) 
+      FROM PlayerMatchStats 
+      WHERE PlayerMatchStats.matchId = Match.id) AS totalAssists
+    FROM Match
+    INNER JOIN Team AS TeamA ON Match.teamAId = TeamA.id
+    INNER JOIN Team AS TeamB ON Match.teamBId = TeamB.id
+    WHERE Match.id = ?
+  ''', [matchId]);
 
     if (result.isNotEmpty) {
       return DTOAfterMatch.fromMap(result.first);

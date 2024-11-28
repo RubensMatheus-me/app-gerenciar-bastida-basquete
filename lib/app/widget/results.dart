@@ -4,7 +4,7 @@ import 'package:basketball_statistics/app/domain/dto/dto_afterMatch.dart';
 
 class Results extends StatelessWidget {
   final int matchId;
-  final IDaoAftermatch dao; 
+  final IDaoAftermatch dao;
 
   const Results({Key? key, required this.matchId, required this.dao})
       : super(key: key);
@@ -22,7 +22,8 @@ class Results extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
-                child: Text('Erro ao carregar resultados: ${snapshot.error}'));
+              child: Text('Erro ao carregar resultados: ${snapshot.error}'),
+            );
           } else if (!snapshot.hasData) {
             return const Center(child: Text('Nenhum resultado encontrado.'));
           }
@@ -31,30 +32,47 @@ class Results extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Vencedor: ${stats.winner}',
-                    style:
-                        const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Text('Total de Pontos: ${stats.totalPoints}',
-                    style: const TextStyle(fontSize: 20)),
-                Text('Diferença de Pontos: ${stats.pointsDifference}',
-                    style: const TextStyle(fontSize: 20)),
-                Text('Total de Faltas: ${stats.totalFouls}',
-                    style: const TextStyle(fontSize: 20)),
-                Text('Total de Rebotes: ${stats.totalRebounds}',
-                    style: const TextStyle(fontSize: 20)),
-                Text('Total de Assistências: ${stats.totalAssists}',
-                    style: const TextStyle(fontSize: 20)),
-                const SizedBox(height: 16),
-                Text('Duração da Partida: ${stats.durationMatch}',
-                    style: const TextStyle(fontSize: 20)),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Vencedor: ${stats.winner}',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatisticRow('Total de Pontos', stats.totalPoints.toString()),
+                  _buildStatisticRow('Duração da Partida (min)', stats.durationMatch.toString()),
+                  _buildStatisticRow('Total de Faltas', stats.totalFouls.toString()),
+                  _buildStatisticRow('Diferença de Pontos', stats.pointsDifference.toString()),
+                  _buildStatisticRow('Total de Rebotes', stats.totalRebounds.toString()),
+                  _buildStatisticRow('Total de Assistências', stats.totalAssists.toString()),
+                  _buildStatisticRow('Total de Turnovers', stats.totalTurnovers.toString()),
+                  _buildStatisticRow('Time Vencedor?', stats.isWinner ? 'Sim' : 'Não'),
+                ],
+              ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildStatisticRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 18),
+          ),
+        ],
       ),
     );
   }

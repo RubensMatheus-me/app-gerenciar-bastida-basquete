@@ -76,4 +76,19 @@ class ImpDaoMatch implements IDAOMatch {
       return DTOMatch.fromMap(maps[i]);
     });
   }
+
+  @override
+  Future<int> updateMatchPoints(int matchId, int pointsTeamA, int pointsTeamB) async {
+  final db = await Connection.openDb();
+
+  return await db.update(
+    'Match',
+    {
+      'pointsTeamA': pointsTeamA,
+      'pointsTeamB': pointsTeamB,
+    },
+    where: 'id = ?',
+    whereArgs: [matchId],
+  );
+  }
 }

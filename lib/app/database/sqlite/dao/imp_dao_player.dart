@@ -44,5 +44,28 @@ class ImpDaoPlayer implements IDAOPlayer {
       whereArgs: [id],
     );
   }
+
+  @override
+  Future<int> updatePlayerMatchStats(
+  int playerId,
+  int matchId, {
+  int? points,
+  int? rebounds,
+  int? assists,
+}) async {
+  final db = await Connection.openDb();
+
+  final statsToUpdate = <String, dynamic>{};
+  if (points != null) statsToUpdate['points'] = points;
+  if (rebounds != null) statsToUpdate['rebounds'] = rebounds;
+  if (assists != null) statsToUpdate['assists'] = assists;
+
+  return await db.update(
+    'PlayerMatchStats',
+    statsToUpdate,
+    where: 'playerId = ? AND matchId = ?',
+    whereArgs: [playerId, matchId],
+  );
+}
 }
 
