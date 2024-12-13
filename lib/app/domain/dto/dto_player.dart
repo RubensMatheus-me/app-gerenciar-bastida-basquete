@@ -5,6 +5,7 @@ class DTOPlayer {
   int tShirtNumber;
   int? rebounds;
   int? assists;
+  int? points;
   int teamId;
 
   DTOPlayer(
@@ -13,11 +14,12 @@ class DTOPlayer {
       required this.position,
       required this.tShirtNumber,
       required this.teamId,
+      this.points,
       this.assists,
       this.rebounds});
 
   Map<String, dynamic> toMap() {
-    return {
+    return {  
       'id': id,
       'name': name,
       'position': position,
@@ -25,6 +27,7 @@ class DTOPlayer {
       'assists': assists,
       'rebounds': rebounds,
       'teamId': teamId,
+      'points': points
     };
   }
 
@@ -37,6 +40,7 @@ class DTOPlayer {
       assists: map['assists'],
       rebounds: map['rebounds'],
       teamId: map['teamId'],
+      points: map['points'],
     );
   }
 }

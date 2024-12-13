@@ -22,7 +22,20 @@ class Results extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
-              child: Text('Erro ao carregar resultados: ${snapshot.error}'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Erro ao carregar resultados: ${snapshot.error}',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => {}, // Implementar tentativa novamente.
+                    child: const Text('Tentar Novamente'),
+                  ),
+                ],
+              ),
             );
           } else if (!snapshot.hasData) {
             return const Center(child: Text('Nenhum resultado encontrado.'));
@@ -30,27 +43,17 @@ class Results extends StatelessWidget {
 
           final stats = snapshot.data!;
 
-          return Padding(
+          return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Vencedor: ${stats.winner}',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildStatisticRow('Total de Pontos', stats.totalPoints.toString()),
-                  _buildStatisticRow('Duração da Partida (min)', stats.durationMatch.toString()),
-                  _buildStatisticRow('Total de Faltas', stats.totalFouls.toString()),
-                  _buildStatisticRow('Diferença de Pontos', stats.pointsDifference.toString()),
-                  _buildStatisticRow('Total de Rebotes', stats.totalRebounds.toString()),
-                  _buildStatisticRow('Total de Assistências', stats.totalAssists.toString()),
-                  _buildStatisticRow('Total de Turnovers', stats.totalTurnovers.toString()),
-                  _buildStatisticRow('Time Vencedor?', stats.isWinner ? 'Sim' : 'Não'),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(stats),
+                const Divider(height: 20),
+                _buildTeamStats(stats),
+                const Divider(height: 20),
+                _buildPlayerStats(stats),
+              ],
             ),
           );
         },
@@ -58,20 +61,82 @@ class Results extends StatelessWidget {
     );
   }
 
-  Widget _buildStatisticRow(String label, String value) {
+  Widget _buildHeader(DTOAfterMatch stats) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Vencedor: ${stats.winner}',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        _buildStatisticRow('Total de Pontos', stats.totalPoints.toString()),
+      ],
+    );
+  }
+
+  Widget _buildTeamStats(DTOAfterMatch stats) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Estatísticas por Equipe:',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        _buildStatisticRow('Pontos - Equipe A', stats.pointsTeamA.toString()),
+        _buildStatisticRow('Pontos - Equipe B', stats.pointsTeamB.toString()),
+      ],
+    );
+  }
+
+  Widget _buildPlayerStats(DTOAfterMatch stats) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Estatísticas por Jogador:',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: stats.players.length,
+          itemBuilder: (context, index) {
+            final player = stats.players[index];
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text(player.tShirtNumber.toString()),
+                ),
+                title: Text(player.name),
+                subtitle: Text(
+                 'Pontos: ${player.points ?? 0}', // Garantir que não seja nulo
+  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  String _formatDuration(double duration) {
+    final minutes = duration.floor();
+    final seconds = ((duration - minutes) * 60).round();
+    return '${minutes}m ${seconds.toString().padLeft(2, '0')}s';
+  }
+
+  Widget _buildStatisticRow(String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 18),
-          ),
+          Text(title, style: const TextStyle(fontSize: 16)),
+          Text(value,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         ],
       ),
     );

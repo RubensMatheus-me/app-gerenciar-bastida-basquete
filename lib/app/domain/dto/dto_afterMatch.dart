@@ -1,55 +1,39 @@
+import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
+
 class DTOAfterMatch {
-  int id;
-  int totalPoints;
-  int durationMatch;
-  int totalFouls;
-  String winner;
-  int pointsDifference;
-  int totalRebounds;
-  int totalAssists;
-  int totalTurnovers;
-  bool isWinner;
+  final int id;
+  final int totalPoints;
+  final String winner;
+  final int totalFouls;
+  final int pointsDifference;
+  final int durationMatch;
+  final List<DTOPlayer> players;
+  final int pointsTeamA;
+  final int pointsTeamB; 
 
   DTOAfterMatch({
     required this.id,
     required this.totalPoints,
-    required this.durationMatch,
-    required this.totalFouls,
     required this.winner,
+    required this.totalFouls,
     required this.pointsDifference,
-    required this.totalRebounds,
-    required this.totalAssists,
-    required this.totalTurnovers,
-    required this.isWinner,
+    required this.durationMatch,
+    required this.players,
+    required this.pointsTeamA, 
+    required this.pointsTeamB, 
   });
 
-  factory DTOAfterMatch.fromMap(Map<String, dynamic> map) {
+  factory DTOAfterMatch.fromMap(Map<String, dynamic> map, List<DTOPlayer> players) {
     return DTOAfterMatch(
-      id: map['id'] ?? 0,
-      totalPoints: map['totalPoints'] ?? 0,
-      durationMatch: map['durationMatch'] ?? 0,
-      totalFouls: map['totalFouls'] ?? 0,
-      winner: map['winner'] ?? '',
-      pointsDifference: map['pointsDifference'] ?? 0,
-      totalRebounds: map['totalRebounds'] ?? 0,
-      totalAssists: map['totalAssists'] ?? 0,
-      totalTurnovers: map['totalTurnovers'] ?? 0,
-      isWinner: (map['isWinner'] ?? 0) == 1,
+      id: map['id'],
+      totalPoints: map['totalPoints'],
+      winner: map['winner'],
+      totalFouls: map['totalFouls'],
+      pointsDifference: map['pointsDifference'],
+      durationMatch: map['durationMatch'],
+      players: players,
+      pointsTeamA: map['pointsTeamA'], 
+      pointsTeamB: map['pointsTeamB'], 
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'totalPoints': totalPoints,
-      'durationMatch': durationMatch,
-      'totalFouls': totalFouls,
-      'winner': winner,
-      'pointsDifference': pointsDifference,
-      'totalRebounds': totalRebounds,
-      'totalAssists': totalAssists,
-      'totalTurnovers': totalTurnovers,
-      'isWinner': isWinner ? 1 : 0,
-    };
   }
 }

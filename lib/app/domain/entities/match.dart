@@ -1,4 +1,4 @@
-import 'package:basketball_statistics/app/domain/entities/basketball.dart';
+
 import 'package:basketball_statistics/app/domain/entities/team.dart';
 
 class Match {
@@ -6,16 +6,16 @@ class Match {
   late dynamic id;
   late Team teamA;
   late Team teamB;
-  late int foulsTeamA;
-  late int fouls;
+  //late int foulsTeamA;
+  //late int fouls;
   late int turnGame;
   late int pointsTeamA;
   late int pointsTeamB;
-  late int rebounds;
-  late int assists;
-  late int turnovers;
+  //late int rebounds;
+  //late int assists;
+  //late int turnovers;
   late DateTime timer;
-  late Basketball basketball;
+  //late Basketball basketball;
   late bool matchStarted;
   late bool isCompleted;
 
@@ -23,13 +23,13 @@ class Match {
     required this.id,
     required this.teamA,
     required this.teamB,
-    required this.fouls,
+    //required this.fouls,
     required this.turnGame,
     required this.pointsTeamA,
     required this.pointsTeamB,
     required this.isCompleted,
     required this.timer,
-    required this.basketball, // Certifique-se de inicializar a bola de basquete
+    //required this.basketball,
   }) {
     validateTeams();
   }
@@ -77,6 +77,7 @@ class Match {
     }
   }
 
+  /*
   validateFouls() {
     if (fouls >= 7) throw Exception("A equipe já atingiu o limite de faltas");
   }
@@ -101,4 +102,5 @@ class Match {
   commitTurnover() {
     turnovers++;
   }
+  */
 }

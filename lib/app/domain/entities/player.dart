@@ -8,9 +8,10 @@ class Player {
   late String? position;
   late int? tShirtNumber;
   late int? teamId;
-  late int rebounds;
-  late int assists;
-  late DTOPlayer dto; // Declare como late, mas inicialize no construtor
+  late int? points;
+  //late int rebounds;
+  //late int assists;
+  late DTOPlayer dto;
   late IDAOPlayer dao;
 
   Player(
@@ -21,11 +22,12 @@ class Player {
       this.tShirtNumber,
       DTOPlayer? dto}) {
     this.dto =
-        dto ?? DTOPlayer(name: '', position: '', tShirtNumber: 0, teamId: 0);
+        dto ?? DTOPlayer(name: '', position: '', tShirtNumber: 0, teamId: 0, points: 0);
     name = this.dto.name;
     position = this.dto.position;
     tShirtNumber = this.dto.tShirtNumber;
     teamId = this.dto.teamId;
+    points = this.dto.points;
 
     validatePlayerName(name!);
     validatePlayerPosition(position!);

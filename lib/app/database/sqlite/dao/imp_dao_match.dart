@@ -6,20 +6,19 @@ import 'package:basketball_statistics/app/domain/interface/dao_match.dart';
 class ImpDaoMatch implements IDAOMatch {
   late Database _db;
 
-  // Ensure the database is initialized
   Future<void> _initializeDb() async {
     _db = await Connection.openDb();
   }
 
   @override
   Future<int> insertMatch(DTOMatch match) async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb(); 
     return await _db.insert('Match', match.toMap());
   }
 
   @override
   Future<int> updateMatch(DTOMatch match) async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb(); 
     return await _db.update(
       'Match',
       match.toMap(),
@@ -30,7 +29,7 @@ class ImpDaoMatch implements IDAOMatch {
 
   @override
   Future<DTOMatch?> getMatchById(int id) async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb();
     List<Map<String, dynamic>> result = await _db.query(
       'Match',
       where: 'id = ?',
@@ -44,7 +43,7 @@ class ImpDaoMatch implements IDAOMatch {
 
   @override
   Future<List<DTOMatch>> getAllMatches() async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb(); 
     final List<Map<String, dynamic>> maps = await _db.query('Match');
     return List.generate(maps.length, (i) {
       return DTOMatch.fromMap(maps[i]);
@@ -52,9 +51,9 @@ class ImpDaoMatch implements IDAOMatch {
   }
 
   Future<DTOMatch?> getMatchForTeams(int teamAId, int teamBId) async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb();  
     final result = await _db.query(
-      'Match',  // Correct table name
+      'Match',  
       where: 'teamAId = ? AND teamBId = ?',
       whereArgs: [teamAId, teamBId],
     );
@@ -67,7 +66,7 @@ class ImpDaoMatch implements IDAOMatch {
 
   @override
   Future<List<DTOMatch>> getOngoingMatches() async {
-    await _initializeDb();  // Ensure _db is initialized
+    await _initializeDb();
     final List<Map<String, dynamic>> maps = await _db.query(
       'Match',
       where: 'isCompleted = 0',

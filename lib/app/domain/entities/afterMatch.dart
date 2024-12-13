@@ -9,34 +9,33 @@ class AfterMatch extends Match {
   late int totalFouls;
   late String winner;
   late int pointsDifference;
-  late int totalRebounds;
-  late int totalAssists;
-  late int totalTurnovers;
+  //late int totalRebounds;
+  //late int totalAssists;
+  //late int totalTurnovers;
   late bool isWinner;
 
   AfterMatch({
     required super.id,
     required super.teamA,
     required super.teamB,
-    required super.fouls,
+    //required super.fouls,
     required super.turnGame,
     required super.pointsTeamA,
     required super.pointsTeamB,
     required super.timer,
     required super.isCompleted,
     required this.durationMatch,
-    required this.totalRebounds,
-    required this.totalAssists,
-    required this.totalTurnovers, 
-    required super.basketball,
+    //required this.totalRebounds,
+    //required this.totalAssists,
+    //required this.totalTurnovers, 
   }){
     calculateTotalPoints();
-    calculateTotalFouls();
+    //calculateTotalFouls();
     determineWinner();
     calculatePointsDifference();
     validateDurationMatch();
     validateTotalFouls();
-    validateStatistics();
+    //validateStatistics();
     validateConsistency();
   }
 
@@ -45,10 +44,11 @@ class AfterMatch extends Match {
     totalPoints = pointsTeamA + pointsTeamB;
   }
 
-
+  /*
   calculateTotalFouls() {
     totalFouls = fouls;
   }
+  */
 
 
   determineWinner() {
@@ -83,11 +83,11 @@ class AfterMatch extends Match {
   }
 
 
-  validateStatistics() {
-    if (totalPoints < 0 || totalRebounds < 0 || totalAssists < 0 || totalTurnovers < 0) {
-      throw Exception("Estatísticas da partida não podem conter valores negativos.");
-    }
-  }
+  //validateStatistics() {
+    //if (totalPoints < 0 || totalRebounds < 0 || totalAssists < 0 || totalTurnovers < 0) {
+      //throw Exception("Estatísticas da partida não podem conter valores negativos.");
+    //}
+  //}
 
 
   validateConsistency() {

@@ -6,7 +6,6 @@ import 'package:basketball_statistics/app/widget/results.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_team.dart';
 import 'package:basketball_statistics/app/domain/dto/dto_player.dart';
 import 'package:basketball_statistics/app/database/sqlite/dao/imp_dao_player.dart';
-import 'package:basketball_statistics/app/widget/player_miniature.dart';
 
 class StartMatch extends StatefulWidget {
   final DTOTeam teamA;
@@ -82,11 +81,10 @@ class _StartMatchState extends State<StartMatch> {
     });
   }
 
-  void _registerScore(int points, int cellIndex) async {
+void _registerScore(int points, int cellIndex) async {
   if (_selectedPlayer != null) {
     try {
       final daoMatch = ImpDaoMatch();
-
       final match = await daoMatch.getMatchById(widget.matchId);
 
       if (match == null) {
@@ -96,12 +94,14 @@ class _StartMatchState extends State<StartMatch> {
         return;
       }
 
+      print('Antes da atualização do jogador: ${_selectedPlayer!.points}');
+
+      _selectedPlayer!.points = (_selectedPlayer!.points ?? 0) + points;
       await _daoPlayer.updatePlayerMatchStats(
         _selectedPlayer!.id!,
         widget.matchId,
-        points: points,
+        points: _selectedPlayer!.points!,
       );
-
 
       if (_isTeamAVisible) {
         await daoMatch.updateMatchPoints(
@@ -117,7 +117,18 @@ class _StartMatchState extends State<StartMatch> {
         );
       }
 
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '+$points - ${_selectedPlayer!.name}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          duration: const Duration(seconds: 1), 
+        ),
+      );
+
       setState(() {});
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao registrar pontuação: $e')),
@@ -216,38 +227,47 @@ Widget _buildGridButton(int row, int col, double buttonWidth, double buttonHeigh
                   itemCount: (_isTeamAVisible ? _playersTeamA : _playersTeamB).length,
                   padding: const EdgeInsets.symmetric(horizontal: 8),  
                   itemBuilder: (context, index) {
-                    final player = (_isTeamAVisible ? _playersTeamA : _playersTeamB)[index];
+  final player = (_isTeamAVisible ? _playersTeamA : _playersTeamB)[index];
 
-                    return GestureDetector(
-                      onTap: () => _selectPlayer(player),
-                      child: Hero(
-                        tag: 'player-${player.id}', 
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8), 
-                          padding: const EdgeInsets.all(8),
-                          width: 120, 
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center, 
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.grey, 
-                                child: const Icon(
-                                  Icons.person,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                player.name,
-                                textAlign: TextAlign.center,  
-                                style: const TextStyle(
-                                  color: Colors.black, 
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+  return GestureDetector(
+    onTap: () => _selectPlayer(player),
+    child: Hero(
+      tag: 'player-${player.id}', 
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8), 
+        padding: const EdgeInsets.all(8),
+        width: 120, 
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, 
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _selectedPlayer == player ? Colors.yellow : Colors.transparent,
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.grey, 
+                child: const Icon(
+                  Icons.person,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              player.name,
+              textAlign: TextAlign.center,  
+              style: const TextStyle(
+                color: Colors.black, 
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
                                 ),
                               ),
                             ],
