@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:datahoops/app/domain/enums/enum_quadrant_position.dart'; // enum
+import 'package:datahoops/app/domain/enums/enum_quadrant_position.dart'; 
 
-/* --------------------------- _QuadrantClipper --------------------------- */
 class _QuadrantClipper extends CustomClipper<Path> {
   final QuadrantPosition position;
   _QuadrantClipper(this.position);
@@ -52,7 +51,6 @@ class _QuadrantClipper extends CustomClipper<Path> {
       old is _QuadrantClipper && old.position != position;
 }
 
-/* ----------------------------- QuadrantButton --------------------------- */
 class QuadrantButton extends StatelessWidget {
   final VoidCallback onPressed;
   final QuadrantPosition position;

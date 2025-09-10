@@ -147,7 +147,6 @@ class _AddPlayerState extends State<AddPlayer> {
                       Icon(Icons.sports_basketball, size: 100, color: accentColor),
                       const SizedBox(height: 24),
 
-                      // Nome
                       TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(
@@ -163,7 +162,6 @@ class _AddPlayerState extends State<AddPlayer> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Número
                       TextFormField(
                         controller: _shirtNumberController,
                         keyboardType: TextInputType.number,
@@ -180,7 +178,6 @@ class _AddPlayerState extends State<AddPlayer> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Posição
                       DropdownButtonFormField<PositionType>(
                         value: _selectedPosition,
                         decoration: InputDecoration(
@@ -228,7 +225,6 @@ class _AddPlayerState extends State<AddPlayer> {
                       ),
                       const SizedBox(height: 24),
 
-                      // Botão Salvar
                       ElevatedButton.icon(
                         onPressed: _savePlayer,
                         icon: const Icon(Icons.save),

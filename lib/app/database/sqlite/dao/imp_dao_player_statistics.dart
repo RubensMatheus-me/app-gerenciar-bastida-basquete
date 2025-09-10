@@ -224,4 +224,26 @@ Future<List<PlayerStatisticsDto>> getAllByMatchId(int matchId) async {
     return (result.first['totalPoints'] as int);
   }
 
+  @override
+  Future<int> getTotalErrorsByPlayer(int playerId, int matchId) async {
+    final db = await Connection.openDb();
+    final result = await db.rawQuery('''
+      SELECT COUNT(*) AS totalErrors
+      FROM player_statistics
+      WHERE matchId = ? AND playerId = ? AND assertivenessPitchId = 2
+    ''', [matchId, playerId]);
+    return result.first['totalErrors'] != null ? result.first['totalErrors'] as int : 0;
+  }
+
+  @override
+  Future<int> getTotalPointsByPlayer(int playerId, int matchId) async {
+    final db = await Connection.openDb();
+    final result = await db.rawQuery('''
+      SELECT SUM(points) AS totalPoints
+      FROM player_statistics
+      WHERE matchId = ? AND playerId = ?
+    ''', [matchId, playerId]);
+    return result.first['totalPoints'] != null ? result.first['totalPoints'] as int : 0;
+  }
+
 }

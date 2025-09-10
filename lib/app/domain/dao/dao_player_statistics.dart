@@ -14,4 +14,6 @@ abstract class IPlayerStatisticsDao {
   Future<List<PlayerZoneStatsDto>> getZoneSummaryByMatchId(int matchId);
   Future<int> getTotalErrorsByMatch(int matchId);
   Future<int> getTotalPointsByMatch(int matchId);
+  Future<int> getTotalErrorsByPlayer(int playerId, int matchId);
+  Future<int> getTotalPointsByPlayer(int playerId, int matchId);
 }
