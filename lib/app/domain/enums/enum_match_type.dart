@@ -1,4 +1,4 @@
 enum MatchType {
   regularMatch,
-  profissionalMatch
+  professionalMatch
 }
