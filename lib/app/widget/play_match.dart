@@ -87,13 +87,23 @@ class _PlayMatchState extends State<PlayMatch> {
     final playerName = _selectedPlayer!.name;
     final resultText = hit ? 'Acerto' : 'Erro';
     final resultColor = hit ? Colors.green : Colors.red;
+
+    int points;
+    if (widget.matchType == MatchType.professionalMatch) {
+      points = _isThreePointCell(cellIndex) ? 2 : 1;
+    } else {
+      points = _isThreePointCell(cellIndex) ? 3 : 2;
+    }
+
+    final scoredPoints = hit ? points : 0;
+
     ZoneType zone = _determineZoneFromCell(cellIndex);
 
     int row = cellIndex ~/ cols;
     int col = cellIndex % cols;
     print('Jogador: $playerName');
     print(
-      'Clique na célula: index=$cellIndex, row=$row, col=$col, zone=$zone, pontos=$points, acerto=$hit',
+      'Clique na célula: index=$cellIndex, row=$row, col=$col, zone=$zone, pontos=$scoredPoints, acerto=$hit',
     );
 
     final assertivenessPitchId = hit ? 1 : 2;
@@ -105,7 +115,7 @@ class _PlayMatchState extends State<PlayMatch> {
     }
 
     final statsDto = PlayerStatisticsDto(
-      points: hit ? points : 0,
+      points: scoredPoints,
       zonePoint: zone.toString(),
       assertivenessPitchId: assertivenessPitchId,
       matchId: widget.match.id!,
@@ -113,7 +123,6 @@ class _PlayMatchState extends State<PlayMatch> {
     );
 
     await ImpDaoPlayerStatistics().insert(statsDto);
-    print('Match ID no registershot: ${widget.match.id}');
     await _checkVictoryCondition();
 
     if (!mounted) return;
@@ -121,7 +130,7 @@ class _PlayMatchState extends State<PlayMatch> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '$resultText: $points pontos por $playerName',
+          '$resultText: $scoredPoints pontos por $playerName',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: resultColor,
@@ -298,7 +307,9 @@ class _PlayMatchState extends State<PlayMatch> {
           children: [
             ElevatedButton(
               onPressed: () {
-                final points = _isThreePointCell(_activeCellIndex!) ? 3 : 2;
+                final points = widget.matchType == MatchType.professionalMatch
+                    ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
+                    : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
                 _registerShot(points, _activeCellIndex!, true);
                 setState(() => _buttonPosition = null);
               },
@@ -313,7 +324,9 @@ class _PlayMatchState extends State<PlayMatch> {
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                final points = _isThreePointCell(_activeCellIndex!) ? 3 : 2;
+                final points = widget.matchType == MatchType.professionalMatch
+                    ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
+                    : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
                 _registerShot(points, _activeCellIndex!, false);
                 setState(() => _buttonPosition = null);
               },
