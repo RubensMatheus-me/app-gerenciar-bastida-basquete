@@ -53,7 +53,7 @@ class _SelectTeamState extends State<SelectTeam> {
       );
       return;
     }
-    
+
     final playerDao = ImpDaoPlayer();
     final teamDao = ImpDaoTeam();
 
@@ -62,12 +62,11 @@ class _SelectTeamState extends State<SelectTeam> {
 
     final teams = allTeamDto.map((t) => t.toEntity()).toList();
 
-    final players = allPlayersDto.map( (pDto) {
-    final team = teams.firstWhere((t) => t.id == pDto.teamId); 
-    
-    return pDto.toEntity(team);
-    }).toList();
+    final players = allPlayersDto.map((pDto) {
+      final team = teams.firstWhere((t) => t.id == pDto.teamId);
 
+      return pDto.toEntity(team);
+    }).toList();
 
     final teamAEntity = _teamA!.toEntity();
     final teamBEntity = _teamB!.toEntity();
@@ -75,7 +74,7 @@ class _SelectTeamState extends State<SelectTeam> {
     try {
       teamAEntity.validateMinimumPlayers(players);
       teamBEntity.validateMinimumPlayers(players);
-    }catch (e) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString(), style: GoogleFonts.poppins()),
@@ -89,7 +88,7 @@ class _SelectTeamState extends State<SelectTeam> {
       id: null,
       timer: Duration.zero,
       maxPoints: 21,
-      winner : null,
+      winner: null,
       matchType: _selectMatchType,
     );
 
@@ -107,6 +106,7 @@ class _SelectTeamState extends State<SelectTeam> {
           teamA: _teamA!,
           teamB: _teamB!,
           match: matchWithId,
+          matchType: _selectMatchType,
         ),
       ),
     );
@@ -116,7 +116,7 @@ class _SelectTeamState extends State<SelectTeam> {
     switch (type) {
       case MatchType.regularMatch:
         return 'Partida Regular';
-      case MatchType.profissionalMatch:
+      case MatchType.professionalMatch:
         return 'Partida Profissional';
     }
   }
@@ -126,7 +126,10 @@ class _SelectTeamState extends State<SelectTeam> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text('Selecionar Times', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        title: Text(
+          'Selecionar Times',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        ),
         centerTitle: true,
         backgroundColor: backgroundColor,
         elevation: 1,
@@ -136,46 +139,57 @@ class _SelectTeamState extends State<SelectTeam> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _teams.length < 2
-              ? Center(
-                  child: Text(
-                    'Cadastre ao menos dois times para iniciar uma partida.',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(fontSize: 18, color: Colors.grey[400]),
-                  ),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      _buildTeamSelector(
-                        title: 'Time A',
-                        selected: _teamA,
-                        borderColor: Colors.redAccent,
-                        onChanged: (val) => setState(() => _teamA = val),
-                      ),
-                      const SizedBox(height: 32),
-                      _buildTeamSelector(
-                        title: 'Time B',
-                        selected: _teamB,
-                        borderColor: Colors.blueAccent,
-                        onChanged: (val) => setState(() => _teamB = val),
-                      ),
-                      const SizedBox(height: 32),
-                      _buildMatchTypeSelector(),
-                      const SizedBox(height: 75),
-                      ElevatedButton.icon(
-                        onPressed: _startMatch,
-                        icon: const Icon(Icons.play_arrow, size: 28),
-                        label: Text('Iniciar Partida', style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 18)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          minimumSize: const Size(double.infinity, 56),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        ),
-                      ),
-                    ],
-                  ),
+          ? Center(
+              child: Text(
+                'Cadastre ao menos dois times para iniciar uma partida.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  color: Colors.grey[400],
                 ),
+              ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  _buildTeamSelector(
+                    title: 'Time A',
+                    selected: _teamA,
+                    borderColor: Colors.redAccent,
+                    onChanged: (val) => setState(() => _teamA = val),
+                  ),
+                  const SizedBox(height: 32),
+                  _buildTeamSelector(
+                    title: 'Time B',
+                    selected: _teamB,
+                    borderColor: Colors.blueAccent,
+                    onChanged: (val) => setState(() => _teamB = val),
+                  ),
+                  const SizedBox(height: 32),
+                  _buildMatchTypeSelector(),
+                  const SizedBox(height: 75),
+                  ElevatedButton.icon(
+                    onPressed: _startMatch,
+                    icon: const Icon(Icons.play_arrow, size: 28),
+                    label: Text(
+                      'Iniciar Partida',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      minimumSize: const Size(double.infinity, 56),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -204,8 +218,13 @@ class _SelectTeamState extends State<SelectTeam> {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.grey[900],
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
             ),
             iconEnabledColor: primaryColor,
             style: GoogleFonts.poppins(
@@ -215,22 +234,18 @@ class _SelectTeamState extends State<SelectTeam> {
             ),
             items: MatchType.values.map((type) {
               final label = _getMatchTypeLabel(type);
-              return DropdownMenuItem(
-                value: type,
-                child: Text(label),
-                );
+              return DropdownMenuItem(value: type, child: Text(label));
             }).toList(),
             onChanged: (val) {
               if (val != null) {
                 setState(() => _selectMatchType = val);
               }
             },
-          )
+          ),
         ],
-      )
+      ),
     );
   }
-
 
   Widget _buildTeamSelector({
     required String title,
@@ -238,53 +253,62 @@ class _SelectTeamState extends State<SelectTeam> {
     required ValueChanged<TeamDto?> onChanged,
     required Color borderColor,
   }) {
-return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-    decoration: BoxDecoration(
-      color: Colors.grey[900],
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: borderColor, width: 2),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.3),
-          blurRadius: 6,
-          offset: const Offset(0, 3),
-        ),
-      ],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: borderColor, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
-        ),
-        const SizedBox(height: 12),
-        DropdownButtonFormField<TeamDto>(
-          value: selected,
-          dropdownColor: Colors.grey[850],
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.grey[900],
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          iconEnabledColor: borderColor,
-          style: GoogleFonts.poppins(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
-          items: _teams.map((team) {
-            return DropdownMenuItem<TeamDto>(
-              value: team,
-              child: Text(team.name, overflow: TextOverflow.ellipsis),
-            );
-          }).toList(),
-          onChanged: onChanged,
-        ),
-      ],
-    ),
-  );
-}
+          const SizedBox(height: 12),
+          DropdownButtonFormField<TeamDto>(
+            value: selected,
+            dropdownColor: Colors.grey[850],
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey[900],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+            ),
+            iconEnabledColor: borderColor,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+            items: _teams.map((team) {
+              return DropdownMenuItem<TeamDto>(
+                value: team,
+                child: Text(team.name, overflow: TextOverflow.ellipsis),
+              );
+            }).toList(),
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+    );
+  }
 }
