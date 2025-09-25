@@ -463,8 +463,52 @@ class _PlayMatchState extends State<PlayMatch> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text('Partida: ${widget.teamA.name} vs ${widget.teamB.name}'),
-        backgroundColor: Colors.grey[700],
+  title: Text('Partida: ${widget.teamA.name} vs ${widget.teamB.name}'),
+  backgroundColor: Colors.grey[700],
+  actions: [
+    if (widget.match.maxPoints == null)
+      IconButton(
+        icon: const Icon(Icons.stop, color: Colors.white),
+        tooltip: 'Encerrar Partida',
+        onPressed: () async {
+          final confirmar = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Encerrar Partida'),
+              content: const Text(
+                  'Deseja encerrar a partida agora e ir para os resultados?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: const Text('Cancelar'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(ctx, true),
+                  child: const Text('Encerrar'),
+                ),
+              ],
+            ),
+          );
+          if (confirmar == true && mounted) {
+            // Leva direto para a tela de resultados
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => Results(
+                  match: widget.match,
+                  winnerTeam: 'Sem vencedor definido',
+                  matchId: widget.match.id!,
+                  teams: [widget.teamA, widget.teamB],
+                  playersByTeam: {
+                    widget.teamA.id!: _playersTeamA,
+                    widget.teamB.id!: _playersTeamB,
+                  },
+                ),
+              ),
+            );
+          }
+        },
+      ),
+  ],
       ),
       body: Stack(
         children: [

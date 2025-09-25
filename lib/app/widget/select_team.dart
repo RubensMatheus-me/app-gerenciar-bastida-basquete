@@ -22,6 +22,8 @@ class _SelectTeamState extends State<SelectTeam> {
   MatchType _selectMatchType = MatchType.regularMatch;
   TeamDto? _teamA;
   TeamDto? _teamB;
+  int? _selectedMaxPoints = 15;
+  final List<int> _presetPoints = [11, 15, 21, 25, 30];
 
   final Color primaryColor = const Color(0xFFEF6C00);
   final Color backgroundColor = const Color(0xFF121212);
@@ -84,10 +86,10 @@ class _SelectTeamState extends State<SelectTeam> {
       return;
     }
 
-    final newMatch = app_match.Match(
+    final newMatch = app_match.Match( 
       id: null,
       timer: Duration.zero,
-      maxPoints: 21,
+      maxPoints: _selectedMaxPoints ?? 15,
       winner: null,
       matchType: _selectMatchType,
     );
@@ -168,7 +170,8 @@ class _SelectTeamState extends State<SelectTeam> {
                   ),
                   const SizedBox(height: 32),
                   _buildMatchTypeSelector(),
-                  const SizedBox(height: 75),
+                  _buildMaxPointsSelector(),
+                  const SizedBox(height: 15),
                   ElevatedButton.icon(
                     onPressed: _startMatch,
                     icon: const Icon(Icons.play_arrow, size: 28),
@@ -192,6 +195,117 @@ class _SelectTeamState extends State<SelectTeam> {
             ),
     );
   }
+
+  Widget _buildMaxPointsSelector() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+    decoration: BoxDecoration(
+      color: Colors.grey[900]?.withOpacity(0.15),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Pontos da Partida',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        DropdownButtonFormField<String>(
+          value: _selectedMaxPoints == null
+              ? 'infinite'
+              : _presetPoints.contains(_selectedMaxPoints)
+                  ? _selectedMaxPoints.toString()
+                  : 'custom',
+          dropdownColor: Colors.grey[900],
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[900],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+          ),
+          items: [
+            ..._presetPoints.map((p) =>
+                DropdownMenuItem(value: p.toString(), child: Text('$p pontos'))),
+            const DropdownMenuItem(value: 'infinite', child: Text('Infinito')),
+            const DropdownMenuItem(value: 'custom', child: Text('Personalizado')),
+          ],
+          onChanged: (val) async {
+            if (val == 'infinite') {
+              setState(() => _selectedMaxPoints = null);
+            } else if (val == 'custom') {
+              final controller = TextEditingController();
+              final result = await showDialog<int>(
+                context: context,
+                builder: (_) => AlertDialog(
+                  backgroundColor: Colors.grey[900],
+                  title: const Text(
+                    'Digite o limite de pontos',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  content: TextField(
+                    controller: controller,
+                    keyboardType: TextInputType.number,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Ex: 40',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      filled: true,
+                      fillColor: Colors.grey[800],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancelar'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        final value = int.tryParse(controller.text);
+                        Navigator.pop(context, value);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+              if (result != null) {
+                setState(() => _selectedMaxPoints = result);
+              }
+            } else {
+              setState(() => _selectedMaxPoints = int.parse(val!));
+            }
+          },
+        ),
+        if (_selectedMaxPoints == null)
+          const SizedBox(height: 8),
+        if (_selectedMaxPoints == null)
+          const Text(
+            'Partida infinita — finalize manualmente',
+            style: TextStyle(color: Colors.white70),
+          ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildMatchTypeSelector() {
     return Container(
@@ -246,6 +360,7 @@ class _SelectTeamState extends State<SelectTeam> {
       ),
     );
   }
+  
 
   Widget _buildTeamSelector({
     required String title,
