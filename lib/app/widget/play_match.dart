@@ -149,7 +149,7 @@ class _PlayMatchState extends State<PlayMatch> {
     final matchId = widget.match.id!;
     final teamAId = widget.teamA.id!;
     final teamBId = widget.teamB.id!;
-    final maxPoints = widget.match.maxPoints ?? 20;
+    final maxPoints = widget.match.maxPoints ?? 15;
     print('Match ID no checkVictory: ${matchId}');
     final statsDao = ImpDaoPlayerStatistics();
     final pointsA = await statsDao.getTotalPointsByTeam(teamAId, matchId);
@@ -294,55 +294,69 @@ class _PlayMatchState extends State<PlayMatch> {
   }
 
   Widget _buildFloatingButtons() {
-    final screenSize = MediaQuery.of(context).size;
-    final position =
-        _buttonPosition ?? Offset(screenSize.width / 2, screenSize.height / 2);
+  final screenSize = MediaQuery.of(context).size;
+  final safePadding = MediaQuery.of(context).padding;
 
-    return Positioned(
-      left: position.dx - 60,
-      top: position.dy - 90,
-      child: Material(
-        color: Colors.transparent,
-        child: Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                final points = widget.matchType == MatchType.professionalMatch
-                    ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
-                    : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
-                _registerShot(points, _activeCellIndex!, true);
-                setState(() => _buttonPosition = null);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(16),
-                elevation: 4,
-              ),
-              child: const Icon(Icons.check, color: Colors.white),
+  const double footerHeight = 140 + 100; 
+  const double buttonsWidth = 140;
+  const double buttonsHeight = 60;
+
+  final position =
+      _buttonPosition ?? Offset(screenSize.width / 2, screenSize.height / 2);
+
+  double left = position.dx - buttonsWidth / 2;
+  double top = position.dy + 20;
+
+  left = left.clamp(0, screenSize.width - buttonsWidth);
+
+  final maxTop = screenSize.height - safePadding.bottom - footerHeight - buttonsHeight;
+  top = top.clamp(safePadding.top, maxTop);
+
+  return Positioned(
+    left: left,
+    top: top,
+    child: Material(
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              final points = widget.matchType == MatchType.professionalMatch
+                  ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
+                  : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
+              _registerShot(points, _activeCellIndex!, true);
+              setState(() => _buttonPosition = null);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(16),
+              elevation: 4,
             ),
-            const SizedBox(width: 8),
-            ElevatedButton(
-              onPressed: () {
-                final points = widget.matchType == MatchType.professionalMatch
-                    ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
-                    : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
-                _registerShot(points, _activeCellIndex!, false);
-                setState(() => _buttonPosition = null);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(16),
-                elevation: 4,
-              ),
-              child: const Icon(Icons.close, color: Colors.white),
+            child: const Icon(Icons.check, color: Colors.white),
+          ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () {
+              final points = widget.matchType == MatchType.professionalMatch
+                  ? (_isThreePointCell(_activeCellIndex!) ? 2 : 1)
+                  : (_isThreePointCell(_activeCellIndex!) ? 3 : 2);
+              _registerShot(points, _activeCellIndex!, false);
+              setState(() => _buttonPosition = null);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(16),
+              elevation: 4,
             ),
-          ],
-        ),
+            child: const Icon(Icons.close, color: Colors.white),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildPlayerFooter() {
     return Container(
