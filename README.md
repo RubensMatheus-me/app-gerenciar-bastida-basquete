@@ -38,15 +38,16 @@ Este projeto foi desenvolvido como parte de um Trabalho de Conclusão de Curso (
 - **Passo a passo:**
 
 - Clone o repositório:
-
-git clone (esta url)
-
+```bash
+git clone: (esta url)
+```
 Acesse o diretório do projeto:
 
 - Instale as dependências:
-
+```bash
 flutter pub get
-
+```
 - Execute o aplicativo:
-
+```bash
 flutter run
+```
