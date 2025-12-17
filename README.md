@@ -1,16 +1,52 @@
-# datahoops
+# DataHoops 🏀
 
-A new Flutter project.
+DataHoops é um aplicativo móvel desenvolvido em Flutter para o registro e análise
+de estatísticas ofensivas de basquete em tempo real, com foco em contextos
+amadores e semi-profissionais. O sistema permite a coleta de eventos durante a
+partida e a posterior visualização de métricas de desempenho por jogador e equipe.
 
-## Getting Started
+Este projeto foi desenvolvido como parte de um Trabalho de Conclusão de Curso (TCC).
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📱 Funcionalidades
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Registro de arremessos em tempo real
+- Classificação por zona da quadra e distância
+- Cálculo automático de pontos e estatísticas
+- Visualização de resultados individuais e coletivos
+- Armazenamento local dos dados (offline)
+- Interface otimizada para uso em ambiente esportivo
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Flutter**
+- **Dart**
+- **SQLite**
+- Arquitetura baseada em camadas (DTO, DAO e regras de negócio)
+
+## ▶️ Como executar o projeto
+
+- **Pré-requisitos:**
+- Flutter SDK (versão estável)
+- Dart SDK (incluído no Flutter)
+- Android Studio ou VS Code
+- Emulador Android ou dispositivo físico
+
+- **Passo a passo:**
+
+- Clone o repositório:
+
+git clone (esta url)
+
+Acesse o diretório do projeto:
+
+- Instale as dependências:
+
+flutter pub get
+
+- Execute o aplicativo:
+
+flutter run
