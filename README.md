@@ -39,7 +39,7 @@ Este projeto foi desenvolvido como parte de um Trabalho de Conclusão de Curso (
 
 - Clone o repositório:
 ```bash
-git clone: (esta url)
+git clone: https://github.com/RubensMatheus-me/datahoops.git
 ```
 Acesse o diretório do projeto:
 
